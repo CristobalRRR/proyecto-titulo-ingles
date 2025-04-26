@@ -1,4 +1,4 @@
-import PTI from "./pages/PTI.jsx";
+import InicioSesion from "./pages/Inicio.jsx";
 export default function App(){
-  return <PTI />
+  return <InicioSesion />
 }
