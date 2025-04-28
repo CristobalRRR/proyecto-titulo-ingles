@@ -28,7 +28,8 @@ npm install axios</code></pre>
 <p>Instalar dependencias:</p>
 <pre><code>pip install djangorestframework
 pip install django-cors-headers
-pip install openai</code></pre>
+pip install openai
+pip install python-dotenv</code></pre>
 
 <p>Aplicar migraciones:</p>
 <pre><code>python manage.py makemigrations
