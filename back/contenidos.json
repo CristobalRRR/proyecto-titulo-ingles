@@ -1,135 +1,134 @@
 {
-    "1° Básico": {
-      "edad": 6,
-      "pronunciacion": "/s/-/z/, /w/-/th/",
-      "vocabulario": "Nombres de animales, adjetivos para describir personas, objetos del colegio, celebraciones, ropa, rutina diaria, partes del cuerpo, personas, expresiones útiles y órdenes, clima",
+  "1° Básico": {
+    "edad": 6,
+    "pronunciacion": "/s/-/z/, /w/-/th/",
+    "vocabulario": "Nombres de animales, adjetivos para describir personas, objetos del colegio, celebraciones, ropa, rutina diaria, partes del cuerpo, personas, expresiones útiles y órdenes, clima",
+    "unidades": {
+      "Unidad 1": "Hello, good morning, good bye; My name is?; Stand up, sit down, open/close the ?, clap your hands, turn around; Classroom objects: bag, desk, chair, pencil, eraser, book, ruler, door, window",
+      "Unidad 2": "My/your; I sing, dance, walk, jump, climb, run",
+      "Unidad 3": "Today is ?; It's (a)?; They're; Weather: windy, sunny, cloudy, rainy, snowy; Clothes: shoes, sock, a hat, dress, pants, skirt, scarf, coat, boots, shirt; ?and?",
+      "Unidad 4": "bread, egg, milk, ice cream, meat, juice, water, cheese, ham, tomato, potato, cookies, carrot."
+    }
+  },
+  "2° Básico": {
+      "edad": 7,
+      "pronunciacion": "/s/ y /z/",
+      "vocabulario": "Adjetive, Animals-are, Can/ Can´t, Frequent Expressions, Places At School, Possessive adjetives, Possessive pronouns, Pronoun, There is/ There are, Verb of movement.",
       "unidades": {
-        "Unidad 1": "Hello, good morning, good bye; My name is?; Stand up, sit down, open/close the ?, clap your hands, turn around; Classroom objects: bag, desk, chair, pencil, eraser, book, ruler, door, window",
-        "Unidad 2": "My/your; I sing, dance, walk, jump, climb, run",
-        "Unidad 3": "Today is ?; It's (a)?; They're; Weather: windy, sunny, cloudy, rainy, snowy; Clothes: shoes, sock, a hat, dress, pants, skirt, scarf, coat, boots, shirt; ?and?",
-        "Unidad 4": "bread, egg, milk, ice cream, meat, juice, water, cheese, ham, tomato, potato, cookies, carrot."
+        "Unidad 1": "Numbers: 11-20. Actions: swim, swing, run, jump, climb, talk, walk. Adjectives: fast/slow, fat/thin. Child/children. Expressions: It is a?/It isn't a? , They are/they aren't; Hi, I'm?, How do you spell??",
+        "Unidad 2": "Prepositions: in/on/under. Don't ?. He/she is/isn't. Parts of the house. Furniture.",
+        "Unidad 3": "Activities: Watching TV, cooking, sleeping, eating, cooking. Places: school, hospital, police station, restaurant, farm. Occupations: teacher, farmer, vet, nurse, cook, driver, waiter, doctor, pilot, mechanic, police officer.",
+        "Unidad 4": "I want?, please. Feelings: hot/cold, angry/bored/scared/sleepy/tired, hungry/thirsty"
       }
     },
-    "2° Básico": {
-        "edad": 7,
-        "pronunciacion": "/s/ y /z/",
-        "vocabulario": "Adjetive, Animals-are, Can/ Can´t, Frequent Expressions, Places At School, Possessive adjetives, Possessive pronouns, Pronoun, There is/ There are, Verb of movement.",
-        "unidades": {
-          "Unidad 1": "Numbers: 11-20. Actions: swim, swing, run, jump, climb, talk, walk. Adjectives: fast/slow, fat/thin. Child/children. Expressions: It is a?/It isn't a? , They are/they aren't; Hi, I'm?, How do you spell??",
-          "Unidad 2": "Prepositions: in/on/under. Don't ?. He/she is/isn't. Parts of the house. Furniture.",
-          "Unidad 3": "Activities: Watching TV, cooking, sleeping, eating, cooking. Places: school, hospital, police station, restaurant, farm. Occupations: teacher, farmer, vet, nurse, cook, driver, waiter, doctor, pilot, mechanic, police officer.",
-          "Unidad 4": "I want?, please. Feelings: hot/cold, angry/bored/scared/sleepy/tired, hungry/thirsty"
-        }
-      },
-      "3° Básico": {
-        "edad": 8,
-        "pronunciacion": "/s/-/z/, /w/-/th/.",
-        "vocabulario": "Animales, recipientes, alimentos (nombre de alimentos), comidas (desayuno, almuerzo, cena, colación), partes del cuerpo, muebles, partes de casa, verbos",
-        "unidades": {
-          "Unidad 1": "Palabras de pregunta en información personal: What's your name? How old are you? I'm ? years old; When's your birthday? How are you?. Expresiones para hacer referencia a la vestimenta y los colores: What's she wearing? She's wearing a sweater; What color is it? It's blue.",
-          "Unidad 2": "Expresar posesión: I have a? (dog, parrot, fish); I don't have a pet. Expresar habilidad: I can jump; It can run. Preguntas de información: What's your favorite animal? It's the monkey.",
-          "Unidad 3": " Preguntas de información: Where is the ball? Where are the books?. Expresiones para indicar lo que hay o no hay: There is a cat; there are boys; there isn't a bed; there aren't tables.",
-          "Unidad 4": "Expresiones acerca de la comida: I like fruit; I don't like pizza; I want a salad, please. Preguntas acerca de la comida y la hora: What food do you like? Do you like apples? What time is it?. Expresiones para pedir y agradecer relacionadas con la comida: Can I have a sandwich, please?. I want juice, please; thank you, you're welcome; yes, please; no, thank you."
-        }
-      },
-      "4° Básico": {
-        "edad": 9,
-        "pronunciacion": "/s/-/z/, /w/-/th/.",
-        "vocabulario": "Acciones, hacer y responder preguntas, celebraciones, indicaciones, verbos de frecuencia, salud, feriados, lugares de la ciudad, preposiciones de lugar, estaciones del año, deberías/ no deberías, equipamiento deportivo, deportes , tráfico y transporte, expresiones y órdenes útiles.",
-        "unidades": {
-          "Unidad 1": "Expresiones relacionadas con la salud: How do you feel? I feel sick; I feel great. What's the matter with him? He has a cold. My leg hurts. That's too bad. Expresiones para ofrecer consejos: You should eat healthy food; you shouldn't eat lots of candies. Expresiones relacionadas con la clase; por ejemplo: take out your?; put away your?; stand up.",
-          "Unidad 2": "Expresiones para preguntar por direcciones: Excuse me, where is the post office? How do you go to the park? How can I get there?. Direcciones y preposiciones: turn left; go straight ahead; the school is in front of the cinema.",
-          "Unidad 3": "Expresiones relacionadas con gustos: I like football; I love sports; I hate TV. Preguntas con Wh-: What sports do you like? What's your favorite sport? Where do you play football? How often do you practice sports?. Acciones y su frecuencia: I play tennis every day.",
-          "Unidad 4": "Preguntas: When's your birthday? What's the date today? What's the weather like today?. Fechas: It's on 25th December. Expresiones: Happy birthday! Merry Christmas! Congratulations!"
-        }
-      },
-      "5° Básico": {
-        "edad": 10,
-        "pronunciacion": "Sonidos: /g/ como en go/ago/egg, /ʤ/ como en jacket/ general/age",
-        "vocabulario": "Jobs and occupations: vet, doctor, nurse, teacher, artist, driver, flight attendant pilot, scientist, architect, actor, baker, carpenter, cook, dentist, farmer, fireman, florist, gardener, journalist, librarian, hairdresser Clothes: jacket, uniform, suit, apron Culture, country, Actions: reading, writing, playing, watching TV, listening to music, gaming, helping, washing, building, sleeping, etc. Adjectives: fun, boring, interesting, cool, nice, etc.,Descripción de personalidad o estado: quiet, friendly, outgoing, sad, angry, tired, bored, happy, lonely, sociable, generous, caring, sensitive Actividades: play football, swim, ride on horse/bicycle, climb, jump, run, etc., invented by, discovered, created child/children, fish/fish, goose/geese, sheep/sheep, etc.",
-        "unidades": {
-          "Unidad 1": "Preguntas como how old/ what/where? Is/are?",
-          "Unidad 2": "Expresiones para preguntar por la hora por ejemplo What time is it? Describir acciones por ejemplo: It's fun/boring/cool/nice",
-          "Unidad 3": "But, It's an",
-          "Unidad 4": "A lot of, By"
-        }
-      },
-      "6° Básico": {
-        "edad": 11,
-        "pronunciacion": "Sonido: /r/ como en run, ready, right.",
-        "vocabulario": "Adjetivos: plastic, metal, wooden, paper, cardboard. Actividades: riding, skating, Reading, walking, jumping, swimming, climbing, watching TV, gaming, writing, playing tennis/football/rugby., City, country, town, village, fire department, police department, bank, supermarket, park, municipality, hospital, restaurant., Travel, trip, journey, visit, holidays, by plane/train/car/bus, visitors, tourists, line/queue, pictures, selfies Adjectives: long, large, small, short, interesting, crowded, beautiful, etc., Adverbs: fast, slowly, well, quietly, quickly, carefully, poorly, angrily, silently, very, really, naturally",
-        "unidades": {
-          "Unidad 1": "Yesterday, last week/month/year.",
-          "Unidad 2": "Who? How much/many? Where?",
-          "Unidad 3": "most, more than, going to, will",
-          "Unidad 4": "First, second, third, fourth, fifth, sixth, seventh, eighth, ninth, tenth."
-        }
-      },
-      "7° Básico": {
-        "edad": 12,
-        "pronunciacion": "Sonido /s/ en plurales (concerts, sports), Sonido /z/ en plurales (disasters, sciences),  Uso apropiado de sonidos del idioma como sonido inicial /h/ (hotel, hostel), Uso apropiado de sonidos del idioma como sonido inicial /h/ (hour, honor, honest)",
-        "vocabulario": "Quantifiers: a lot, many, a few, Conectores: first, second, next, final, before, after, Expresiones: have fun,Conectores: First, next, then, finally, Adjetivos: Adjetivos con prefijo –un (unpleasant, unforgettable, etc.)., Adjetivos: Adjectives ending in –ing (amazing, interesting, etc.)",
-        "unidades": {
-          "Unidad 1": "Have fun, music, movies",
-          "Unidad 2": "Global warming, climate change, Science",
-          "Unidad 3": "Adventure, travel, immigration, culture",
-          "Unidad 4": "Fake, piece of news, headline, breaking news"
-        }
-      },
-      "8° Básico": {
-        "edad": 13,
-        "pronunciacion": "/d/, /t/ o /Id/. /d/ y /ɵ / (this, mother/three, birthday). w/ (week), /r/ (ready). /d/ y /ɵ / (this, mother/three, birthday).",
-        "vocabulario": "Prepositions: Out of, from, into. Conectores: Then, until, so, because. Verbos regulares. Participio de verbos regulares e irregulares. Palabras que indican tiempo, grado y frecuencia como: since, for, ever, never, ago. Adjetivos y pronombres posesivos. ‘s en uso genitivo (posesión). Conjunción de condicionalidad “IF”. Pronombres relativos which, who, whose, whom, where, when. Adjetivos calificativos. Participio de verbos regulares e irregulares. Adverbios y determinantes de cantidad.",
-        "unidades": {
-            "Unidad 1": "Artful, expressions, emotions.",
-            "Unidad 2": "Exploration, discovery, evidence, contribution.",
-            "Unidad 3": "Device, innovative, tool, useful.",
-            "Unidad 4": "Share, discrimination, look down on, accept, love."
-        }
-      },
-      "1° Medio": {
-        "edad": 14,
-        "pronunciacion": "/j/ (year, yes). /ʧ/ (como en vacation). (feet/fit). /tr/ y /dr/ (tree/dress).",
-        "vocabulario": "Ceremonies: Graduation, opening, lavish, solemn. Condolences. Grief. Wreath. Relationship, relation, relate. Friendship, friends, girlfriend, boyfriend, befriend. Motherhood. Explore, explorer, exploration. Trip. Discover, discovery, discoverer. Expedition. Travel, traveller, travelling. Exchange program, exchange student. Abroad. Culture, cultural. Traditions. History, historical.",
-        "unidades": {
-          "Unidad 1": "Ceremonies. Death. Will. Funerals. Wreath.",
-          "Unidad 2": "Love. Friendship. Permission. Obligation. Prohibition. Marriage.",
-          "Unidad 3": "Culture. Travelling. Expedition. Explorer. Visiting. Experience. Abroad. Exchange.",
-          "Unidad 4": "Culture. Traditions. Idiosyncrasy. Ritual. Custom. Behaviour. Relationships. Education. Inherit."
-        }
-      },
-      "2° Medio": {
-        "edad": 15,
-        "pronunciacion": "s /t/ (to), /d/ (do). /t/ (to), /d/ (do). /ʒ/ (usually). s /sp/ (special), /st/ (student).",
-        "vocabulario": "Nacionalidades (Chinese, Japanese, American, Chilean). Globalization, global, globally. Climate. Reduce. Reuse. Recycle. Environment. Blog, blogger, to blog, blogging. Social media. Twit, Twitter. Influencer. Raise voice, stand up, speak up. Stand out. Step up. Call out. Reach out. Courage, bravery, endurance, determination, fearlessness. Grit. Call for action. Move. Take action. Leadership, leader, lead, be led.",
-        "unidades": {
-          "Unidad 1": "Global citizen. Citizenship. Climate change. Taking action. Social awareness.",
-          "Unidad 2": "Climate change awareness. Rainforests. Green areas. Landfills. To be green.",
-          "Unidad 3": "Online community. Blogs. Stand out. Raise the voice. Speak up. Social media. Freedom of speech.",
-          "Unidad 4": ""
-        }
-      },
-      "3° Medio": {
-        "edad": 16,
-        "pronunciacion": "No aplica",
-        "vocabulario": "My skills and achievements contribute to the society itself. My reflections on global issues. The importance of the evolution of languages. English as a means to understand new trends.",
-        "unidades": {
-          "Unidad 1": "How can I successfully present skills and achievements in a letter of recommendation and a job interview in English? What constitutes a successful job interview? Why is it useful to know how to express views in a foreign language?",
-          "Unidad 2": "How do oral and written texts in English contribute to my vision about society? How is the access to new information increased by knowledge of English? How do I persuade other people, in English, about my world views?",
-          "Unidad 3": "Why is it important to read and understand literary texts and non-literary texts? How does History and its preservation and re-reading allow us to have a more comprehensive view and more informed opinion about current issues? In what way are past and contemporary trends and beliefs similar and different from our current reality?",
-          "Unidad 4": "How does the English language allow me to become part of a mediatic society? How is face to face communication different from online communication? In what way do new trends about art, fashion and social networks allow our society to become more democratic?"
-        }
-      },
-      "4° Medio": {
-        "edad": 17,
-        "pronunciacion": "No aplica",
-        "vocabulario": "The media and the message in today's globalized world. Communicating ideas through science and technology. It's business time! Learning about sustainability and contributing with solutions world.",
-        "unidades": {
-          "Unidad 1": "How does the English language allow me to become part of a mediatic society? How can we use language to shape the views of others? What is the importance of choosing the appropriate language when trying to persuade an audience?",
-          "Unidad 2": "Why is science fiction a popular genre? Is technology taking over? Why is the language of science and technology better understood through the knowledge of English?",
-          "Unidad 3": "Why does the language used in business and economy need to be concise, precise and objective in order to be persuasive? In what way is it important for my future to know how to communicate and persuade people about my ideas and beliefs? How does the knowledge of business and economy language and terminology open doors for me in this globalized world?",
-          "Unidad 4": "What urgent environmental problems exist throughout the world? What sort of language and structures should I use when I deliver an informative oral presentation? How can a successful presentation persuade others about a specific viewpoint and move them to action? Which language and grammatical structures should I use when I write a report?"
-        }
+    "3° Básico": {
+      "edad": 8,
+      "pronunciacion": "/s/-/z/, /w/-/th/.",
+      "vocabulario": "Animales, recipientes, alimentos (nombre de alimentos), comidas (desayuno, almuerzo, cena, colación), partes del cuerpo, muebles, partes de casa, verbos",
+      "unidades": {
+        "Unidad 1": "Palabras de pregunta en información personal: What's your name? How old are you? I'm ? years old; When's your birthday? How are you?. Expresiones para hacer referencia a la vestimenta y los colores: What's she wearing? She's wearing a sweater; What color is it? It's blue.",
+        "Unidad 2": "Expresar posesión: I have a? (dog, parrot, fish); I don't have a pet. Expresar habilidad: I can jump; It can run. Preguntas de información: What's your favorite animal? It's the monkey.",
+        "Unidad 3": "Preguntas de información: Where is the ball? Where are the books?. Expresiones para indicar lo que hay o no hay: There is a cat; there are boys; there isn't a bed; there aren't tables.",
+        "Unidad 4": "Expresiones acerca de la comida: I like fruit; I don't like pizza; I want a salad, please. Preguntas acerca de la comida y la hora: What food do you like? Do you like apples? What time is it?. Expresiones para pedir y agradecer relacionadas con la comida: Can I have a sandwich, please?. I want juice, please; thank you, you're welcome; yes, please; no, thank you."
       }
-  }
-  
+    },
+    "4° Básico": {
+      "edad": 9,
+      "pronunciacion": "/s/-/z/, /w/-/th/.",
+      "vocabulario": "Acciones, hacer y responder preguntas, celebraciones, indicaciones, verbos de frecuencia, salud, feriados, lugares de la ciudad, preposiciones de lugar, estaciones del año, deberías/ no deberías, equipamiento deportivo, deportes , tráfico y transporte, expresiones y órdenes útiles.",
+      "unidades": {
+        "Unidad 1": "Expresiones relacionadas con la salud: How do you feel? I feel sick; I feel great. What's the matter with him? He has a cold. My leg hurts. That's too bad. Expresiones para ofrecer consejos: You should eat healthy food; you shouldn't eat lots of candies. Expresiones relacionadas con la clase; por ejemplo: take out your?; put away your?; stand up.",
+        "Unidad 2": "Expresiones para preguntar por direcciones: Excuse me, where is the post office? How do you go to the park? How can I get there?. Direcciones y preposiciones: turn left; go straight ahead; the school is in front of the cinema.",
+        "Unidad 3": "Expresiones relacionadas con gustos: I like football; I love sports; I hate TV. Preguntas con Wh-: What sports do you like? What's your favorite sport? Where do you play football? How often do you practice sports?. Acciones y su frecuencia: I play tennis every day.",
+        "Unidad 4": "Preguntas: When's your birthday? What's the date today? What's the weather like today?. Fechas: It's on 25th December. Expresiones: Happy birthday! Merry Christmas! Congratulations!"
+      }
+    },
+    "5° Básico": {
+      "edad": 10,
+      "pronunciacion": "Sonidos: /g/ como en go/ago/egg, /ʤ/ como en jacket/ general/age",
+      "vocabulario": "Jobs and occupations: vet, doctor, nurse, teacher, artist, driver, flight attendant pilot, scientist, architect, actor, baker, carpenter, cook, dentist, farmer, fireman, florist, gardener, journalist, librarian, hairdresser Clothes: jacket, uniform, suit, apron Culture, country, Actions: reading, writing, playing, watching TV, listening to music, gaming, helping, washing, building, sleeping, etc. Adjectives: fun, boring, interesting, cool, nice, etc.,Descripción de personalidad o estado: quiet, friendly, outgoing, sad, angry, tired, bored, happy, lonely, sociable, generous, caring, sensitive Actividades: play football, swim, ride on horse/bicycle, climb, jump, run, etc., invented by, discovered, created child/children, fish/fish, goose/geese, sheep/sheep, etc.",
+      "unidades": {
+        "Unidad 1": "Preguntas como how old/ what/where? Is/are?",
+        "Unidad 2": "Expresiones para preguntar por la hora por ejemplo What time is it? Describir acciones por ejemplo: It's fun/boring/cool/nice",
+        "Unidad 3": "But, It's an",
+        "Unidad 4": "A lot of, By"
+      }
+    },
+    "6° Básico": {
+      "edad": 11,
+      "pronunciacion": "Sonido: /r/ como en run, ready, right.",
+      "vocabulario": "Adjetivos: plastic, metal, wooden, paper, cardboard. Actividades: riding, skating, Reading, walking, jumping, swimming, climbing, watching TV, gaming, writing, playing tennis/football/rugby., City, country, town, village, fire department, police department, bank, supermarket, park, municipality, hospital, restaurant., Travel, trip, journey, visit, holidays, by plane/train/car/bus, visitors, tourists, line/queue, pictures, selfies Adjectives: long, large, small, short, interesting, crowded, beautiful, etc., Adverbs: fast, slowly, well, quietly, quickly, carefully, poorly, angrily, silently, very, really, naturally",
+      "unidades": {
+        "Unidad 1": "Yesterday, last week/month/year.",
+        "Unidad 2": "Who? How much/many? Where?",
+        "Unidad 3": "most, more than, going to, will",
+        "Unidad 4": "First, second, third, fourth, fifth, sixth, seventh, eighth, ninth, tenth."
+      }
+    },
+    "7° Básico": {
+      "edad": 12,
+      "pronunciacion": "Sonido /s/ en plurales (concerts, sports), Sonido /z/ en plurales (disasters, sciences),  Uso apropiado de sonidos del idioma como sonido inicial /h/ (hotel, hostel), Uso apropiado de sonidos del idioma como sonido inicial /h/ (hour, honor, honest)",
+      "vocabulario": "Quantifiers: a lot, many, a few, Conectores: first, second, next, final, before, after, Expresiones: have fun,Conectores: First, next, then, finally, Adjetivos: Adjetivos con prefijo –un (unpleasant, unforgettable, etc.)., Adjetivos: Adjectives ending in –ing (amazing, interesting, etc.)",
+      "unidades": {
+        "Unidad 1": "Have fun, music, movies",
+        "Unidad 2": "Global warming, climate change, Science",
+        "Unidad 3": "Adventure, travel, immigration, culture",
+        "Unidad 4": "Fake, piece of news, headline, breaking news"
+      }
+    },
+    "8° Básico": {
+      "edad": 13,
+      "pronunciacion": "/d/, /t/ o /Id/. /d/ y /ɵ / (this, mother/three, birthday). w/ (week), /r/ (ready). /d/ y /ɵ / (this, mother/three, birthday).",
+      "vocabulario": "Prepositions: Out of, from, into. Conectores: Then, until, so, because. Verbos regulares. Participio de verbos regulares e irregulares. Palabras que indican tiempo, grado y frecuencia como: since, for, ever, never, ago. Adjetivos y pronombres posesivos. ‘s en uso genitivo (posesión). Conjunción de condicionalidad “IF”. Pronombres relativos which, who, whose, whom, where, when. Adjetivos calificativos. Participio de verbos regulares e irregulares. Adverbios y determinantes de cantidad.",
+      "unidades": {
+          "Unidad 1": "Artful, expressions, emotions.",
+          "Unidad 2": "Exploration, discovery, evidence, contribution.",
+          "Unidad 3": "Device, innovative, tool, useful.",
+          "Unidad 4": "Share, discrimination, look down on, accept, love."
+      }
+    },
+    "1° Medio": {
+      "edad": 14,
+      "pronunciacion": "/j/ (year, yes). /ʧ/ (como en vacation). (feet/fit). /tr/ y /dr/ (tree/dress).",
+      "vocabulario": "Ceremonies: Graduation, opening, lavish, solemn. Condolences. Grief. Wreath. Relationship, relation, relate. Friendship, friends, girlfriend, boyfriend, befriend. Motherhood. Explore, explorer, exploration. Trip. Discover, discovery, discoverer. Expedition. Travel, traveller, travelling. Exchange program, exchange student. Abroad. Culture, cultural. Traditions. History, historical.",
+      "unidades": {
+        "Unidad 1": "Ceremonies. Death. Will. Funerals. Wreath.",
+        "Unidad 2": "Love. Friendship. Permission. Obligation. Prohibition. Marriage.",
+        "Unidad 3": "Culture. Travelling. Expedition. Explorer. Visiting. Experience. Abroad. Exchange.",
+        "Unidad 4": "Culture. Traditions. Idiosyncrasy. Ritual. Custom. Behaviour. Relationships. Education. Inherit."
+      }
+    },
+    "2° Medio": {
+      "edad": 15,
+      "pronunciacion": "s /t/ (to), /d/ (do). /t/ (to), /d/ (do). /ʒ/ (usually). s /sp/ (special), /st/ (student).",
+      "vocabulario": "Nacionalidades (Chinese, Japanese, American, Chilean). Globalization, global, globally. Climate. Reduce. Reuse. Recycle. Environment. Blog, blogger, to blog, blogging. Social media. Twit, Twitter. Influencer. Raise voice, stand up, speak up. Stand out. Step up. Call out. Reach out. Courage, bravery, endurance, determination, fearlessness. Grit. Call for action. Move. Take action. Leadership, leader, lead, be led.",
+      "unidades": {
+        "Unidad 1": "Global citizen. Citizenship. Climate change. Taking action. Social awareness.",
+        "Unidad 2": "Climate change awareness. Rainforests. Green areas. Landfills. To be green.",
+        "Unidad 3": "Online community. Blogs. Stand out. Raise the voice. Speak up. Social media. Freedom of speech.",
+        "Unidad 4": "Heroes. Making a difference. Global awareness. Climate change. Social service. Spirit of service"
+      }
+    },
+    "3° Medio": {
+      "edad": 16,
+      "pronunciacion": "No aplica",
+      "vocabulario": "My skills and achievements contribute to the society itself. My reflections on global issues. The importance of the evolution of languages. English as a means to understand new trends.",
+      "unidades": {
+        "Unidad 1": "How can I successfully present skills and achievements in a letter of recommendation and a job interview in English? What constitutes a successful job interview? Why is it useful to know how to express views in a foreign language?",
+        "Unidad 2": "How do oral and written texts in English contribute to my vision about society? How is the access to new information increased by knowledge of English? How do I persuade other people, in English, about my world views?",
+        "Unidad 3": "Why is it important to read and understand literary texts and non-literary texts? How does History and its preservation and re-reading allow us to have a more comprehensive view and more informed opinion about current issues? In what way are past and contemporary trends and beliefs similar and different from our current reality?",
+        "Unidad 4": "How does the English language allow me to become part of a mediatic society? How is face to face communication different from online communication? In what way do new trends about art, fashion and social networks allow our society to become more democratic?"
+      }
+    },
+    "4° Medio": {
+      "edad": 17,
+      "pronunciacion": "No aplica",
+      "vocabulario": "The media and the message in today's globalized world. Communicating ideas through science and technology. It's business time! Learning about sustainability and contributing with solutions world.",
+      "unidades": {
+        "Unidad 1": "How does the English language allow me to become part of a mediatic society? How can we use language to shape the views of others? What is the importance of choosing the appropriate language when trying to persuade an audience?",
+        "Unidad 2": "Why is science fiction a popular genre? Is technology taking over? Why is the language of science and technology better understood through the knowledge of English?",
+        "Unidad 3": "Why does the language used in business and economy need to be concise, precise and objective in order to be persuasive? In what way is it important for my future to know how to communicate and persuade people about my ideas and beliefs? How does the knowledge of business and economy language and terminology open doors for me in this globalized world?",
+        "Unidad 4": "What urgent environmental problems exist throughout the world? What sort of language and structures should I use when I deliver an informative oral presentation? How can a successful presentation persuade others about a specific viewpoint and move them to action? Which language and grammatical structures should I use when I write a report?"
+      }
+    }
+}
