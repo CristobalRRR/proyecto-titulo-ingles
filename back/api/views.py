@@ -1,14 +1,17 @@
 from django.shortcuts import render
-
-# Create your views here.
+from django.conf import settings
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from openai import OpenAI
+import json
 import os
 
-# Asegúrate de tener tu API Key en las variables de entorno
-client = OpenAI(api_key="aqui")
+client = OpenAI(api_key=settings.OPENAI_API_KEY)
+json_contenidos = os.path.join(os.path.dirname(__file__), "../contenidos.json")
+with open(json_contenidos, "r", encoding="utf-8") as f:
+    datos_cursos = json.load(f)
+
 def GenerarPrompt(curso, unidad, palabrasClave, vocabulario, pronunciacion, edad):
         prompt = (
                     f"Actúa como un experto en docencia de inglés y dame una lista de 5 canciones en inglés para un curso de {curso} que está trabajando la unidad de {unidad}. Los objetivos son:.\n"
@@ -24,23 +27,23 @@ class GenerarRecomendacionAPIView(APIView):
     def post(self, request):
         curso = request.data.get('curso')
         unidad = request.data.get('unidad')
-
-        if curso == "1° Básico":
-            edad = 6
-            pronunciacion = "/s/-/z/, /w/-/th/"
-            vocabulario = "Nombres de animales, adjetivos para describir personas, objetos del colegio, celebraciones, ropa, rutina diaria, partes del cuerpo, personas, expresiones útiles y órdenes, clima"
-            if unidad == "Unidad 1":
-                palabrasClave = " Hello, good morning, good bye; My name is?; Stand up, sit down, open/close the ?, clap your hands, turn around; Classroom objects: bag, desk, chair, pencil, eraser, book, ruler, door, window"
-                prompt = GenerarPrompt(curso, unidad, palabrasClave, vocabulario, pronunciacion, edad)
-            elif unidad == "Unidad 2":
-                palabrasClave = "My/your; I sing, dance, walk, jump, climb, run"
-                prompt = GenerarPrompt(curso, unidad, palabrasClave, vocabulario, pronunciacion, edad)
-            elif unidad == "Unidad 3":
-                palabrasClave = "Today is ?; It's (a)?; They're; Weather: windy, sunny, cloudy, rainy, snowy; Clothes: shoes, sock, a hat, dress, pants, skirt, scarf, coat, boots, shirt; ?and?"
-                prompt = GenerarPrompt(curso, unidad, palabrasClave, vocabulario, pronunciacion, edad)
-            elif unidad == "Unidad 4":
-                palabrasClave = "bread, egg, milk, ice cream, meat, juice, water, cheese, ham, tomato, potato, cookies, carrot."
-                prompt = GenerarPrompt(curso, unidad, palabrasClave, vocabulario, pronunciacion, edad)
+        
+        datos_curso = datos_cursos.get(curso)
+        if not datos_curso:
+            return Response({"error": "Curso no válido"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        palabrasClave = datos_curso["unidades"].get(unidad)
+        if not palabrasClave:
+            return Response({"error": "Unidad no válida"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        prompt = GenerarPrompt(
+            curso,
+            unidad,
+            palabrasClave,
+            datos_curso["vocabulario"],
+            datos_curso["pronunciacion"],
+            datos_curso["edad"]
+        )
         
         try:
             respuesta = client.chat.completions.create(
