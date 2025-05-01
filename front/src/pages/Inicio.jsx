@@ -26,10 +26,11 @@ export default function InicioSesion() {
     }
   
     try {
-      const response = await axios.post("http://localhost:8000/api/generar-recomendacion/", {
+
+      const response = await axios.post("http://192.168.0.2:8000/api/generar-recomendacion/", {
         curso: cursoSeleccionado,
         unidad: unidadSeleccionada
-      });
+      }) ;
   
       console.log("Respuesta del backend:", response.data);
   
@@ -47,12 +48,22 @@ export default function InicioSesion() {
   if (userType === "inicio") {
     return (
       <div className="min-h-screen flex items-center justify-center bg-purple-300">
-        <div className="bg-zinc-900 rounded-2xl p-6 w-72 space-y-4 text-center">
-          <Input placeholder="Usuario" className="bg-white rounded-full" />
-          <Input placeholder="Contraseña" type="password" className="bg-white rounded-full" />
-          <Boton className="w-full rounded-full" onClick={() => setUserType("docente")}>Ingresar como docente</Boton>
-          <div className="border-t border-white my-2"></div>
-          <Boton variant="outline" className="w-full rounded-full" onClick={() => setUserType("alumno")}>Ingresar como alumno</Boton>
+        <div className="flex flex-col items-center justify-between bg-zinc-900 rounded-2xl p-6 w-full max-w-sm h-[70vh] text-white shadow-lg">
+          <h1 className="text-2xl font-bold text-center mb-2">Aprende inglés con canciones</h1>
+        
+          <div className="w-full flex flex-col space-y-4 mt-4">
+            <Input placeholder="Usuario" className="bg-white rounded-full text-black" />
+            <Input placeholder="Contraseña" type="password" className="bg-white rounded-full text-black" />
+            <Boton className="w-full rounded-full bg-purple-600 hover:bg-purple-700" onClick={() => setUserType("docente")}>
+              Ingresar como docente
+            </Boton>
+          </div>
+          
+          <div className="w-full border-t border-white my-4" />
+
+          <Boton variant="outline" className="w-full rounded-full" onClick={() => setUserType("alumno")}>
+            Ingresar como alumno
+          </Boton>
         </div>
       </div>
     );
