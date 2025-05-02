@@ -1,13 +1,17 @@
 import React, { useState } from "react";
+import { useEffect } from "react";
 import { Boton } from "../components/boton.jsx";
 import { Input } from "../components/input.jsx";
 import { Select } from "../components/select.jsx";
 import { Tarjeta, TarjetaContenido } from "../components/tarjeta.jsx";
 import axios from "axios";
+import contenidos from "../data/contenidos2.json";
+
 
 //Lista de desplegables compartida para Docente y Alumno
 const cursos = ["1° Básico", "2° Básico", "3° Básico", "4° Básico", "5° Básico",
-  "6° Básico", "7° Básico", "8° Básico", "1° Medio", "2° Medio", "3° Medio", "4° Medio"];
+"6° Básico", "7° Básico", "8° Básico", "1° Medio", "2° Medio", "3° Medio", "4° Medio"];
+
 const unidades = ["Unidad 1", "Unidad 2", "Unidad 3", "Unidad 4"];
 
 //Lista de desplegables alumno
@@ -18,6 +22,28 @@ export default function InicioSesion() {
   const [canciones, setCanciones] = useState([]);
   const [unidadSeleccionada, setUnidadSeleccionada] = useState("");
   const [cursoSeleccionado, setCursoSeleccionado] = useState("");
+  const [tema, setTema] = useState("");
+  const [contenido, setContenido] = useState("");
+  const [pronunciacion, setPronunciacion] = useState("");
+  const [vocabulario, setVocabulario] = useState("");
+
+  useEffect(() => {
+    const datosCurso = contenidos[cursoSeleccionado];
+    const datosUnidad = datosCurso?.unidades?.[unidadSeleccionada];
+  
+    if (datosUnidad) {
+      setTema(datosUnidad.tema || "");
+      setContenido(datosUnidad.contenido || "");
+      setPronunciacion(datosUnidad.pronunciacion || "");
+      setVocabulario(datosUnidad.vocabulario || "");
+    } else {
+      setTema("");
+      setContenido("");
+      setPronunciacion("");
+      setVocabulario("");
+    }
+  }, [cursoSeleccionado, unidadSeleccionada]);
+
 
   const generarRecomendaciones = async () => {
     if (!cursos.includes(cursoSeleccionado) || !unidades.includes(unidadSeleccionada)) {
@@ -72,16 +98,30 @@ export default function InicioSesion() {
   if (userType === "docente") {
     return (
       <div className="min-h-screen bg-purple-300 flex items-center justify-center">
+
         <Tarjeta className="bg-zinc-900 w-80 p-4 space-y-2 text-white">
           <h2 className="text-center text-lg font-semibold">Seleccione los contenidos</h2>
-          <Select label="Curso" items={cursos} onChange={(e) =>    {console.log("Curso seleccionado:", e.target.value); setCursoSeleccionado(e.target.value)}}/>
-          <Select label="Unidad" items={unidades} onChange={(e) =>    {console.log("Unidad seleccionada:", e.target.value); setUnidadSeleccionada(e.target.value)}}/>
-          <Boton className="w-full rounded-full bg-purple-500" onClick={generarRecomendaciones}>Recomendar</Boton>
-          <Boton variant="outline" className="w-full rounded-full" onClick={() => setUserType("inicio")}>Regresar</Boton>
+          
+          <Select label="Curso" items={cursos} onChange={(e) => setCursoSeleccionado(e.target.value)} value={cursoSeleccionado}/>
+          <Select label="Unidad" items={unidades} onChange={(e) => setUnidadSeleccionada(e.target.value)} value={unidadSeleccionada}/>
+          <Select label="Tema" value={tema || "Selecciona curso y unidad"} disabled />
+          <Select label="Contenido" value={contenido || "Selecciona curso y unidad"} disabled />
+          <Select label="Pronunciación" value={pronunciacion || "Selecciona curso y unidad"} disabled />
+          <Select label="Vocabulario" value={vocabulario || "Selecciona curso y unidad"} disabled />
+
+          <Boton className="w-full rounded-full bg-purple-500" onClick={generarRecomendaciones}>
+            Recomendar
+          </Boton>
+          <Boton variant="outline" className="w-full rounded-full" onClick={() => setUserType("inicio")}>
+            Regresar
+          </Boton>
         </Tarjeta>
+
       </div>
     );
   }
+  
+  
 
   if (userType === "recomendaciones") {
     return (

@@ -8,7 +8,7 @@ import json
 import os
 
 client = OpenAI(api_key=settings.OPENAI_API_KEY)
-json_contenidos = os.path.join(os.path.dirname(__file__), "../contenidos.json")
+json_contenidos = os.path.join(os.path.dirname(__file__), "../contenidos2.json")
 with open(json_contenidos, "r", encoding="utf-8") as f:
     datos_cursos = json.load(f)
 
@@ -36,13 +36,18 @@ class GenerarRecomendacionAPIView(APIView):
         if not palabrasClave:
             return Response({"error": "Unidad no válida"}, status=status.HTTP_400_BAD_REQUEST)
         
+        palabrasClave = datos_curso.get("contenido", "")
+        vocabulario = datos_curso.get("vocabulario", "")
+        pronunciacion = datos_curso.get("pronunciacion", "")
+        edad = datos_curso.get("edad", 0)
+        
         prompt = GenerarPrompt(
             curso,
             unidad,
             palabrasClave,
-            datos_curso["vocabulario"],
-            datos_curso["pronunciacion"],
-            datos_curso["edad"]
+            vocabulario,
+            pronunciacion,
+            edad
         )
         
         try:
