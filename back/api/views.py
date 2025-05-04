@@ -8,14 +8,15 @@ import json
 import os
 
 client = OpenAI(api_key=settings.OPENAI_API_KEY)
-json_contenidos = os.path.join(os.path.dirname(__file__), "../contenidos2.json")
+json_contenidos = os.path.join(os.path.dirname(__file__), "../contenidos.json")
 with open(json_contenidos, "r", encoding="utf-8") as f:
     datos_cursos = json.load(f)
 
-def GenerarPrompt(curso, unidad, palabrasClave, vocabulario, pronunciacion, edad):
+def GenerarPrompt(curso, unidad, tema, contenidos, palabrasClave, vocabulario, pronunciacion, edad):
         prompt = (
-                    f"Actúa como un experto en docencia de inglés y dame una lista de 5 canciones en inglés para un curso de {curso} que está trabajando la unidad de {unidad}. Los objetivos son:.\n"
-                    f"Temas clave a exponer: {palabrasClave}.\n"
+                    f"Actúa como un experto en docencia de inglés y dame una lista de 5 canciones en inglés para un curso de {curso} que está trabajando la unidad de {unidad} cuyo nombre es {tema}. Los objetivos son:.\n"
+                    f"Los contenidos a exponer: {contenidos}.\n"
+                    f"Las palabras clave usadas son: {palabrasClave}.\n"
                     f"El vocabulario son las palabras: {vocabulario}. Se busca mejorar la pronunciación en la letra '{pronunciacion}' incluida en palabras en inglés, "
                     f"todo esto en el contexto de la educación chilena para estudiantes de {edad} años de edad, ademas ten en consideracion que no deben incluir nombres y/o letras explicitas o que puedan resultar ofensivas. \n"
                     f"El formato debe ser el siguiente, una lista sin ningún texto extra: [N° Canción]. [Nombre de la canción] - [Nombre del artista]"
@@ -32,18 +33,23 @@ class GenerarRecomendacionAPIView(APIView):
         if not datos_curso:
             return Response({"error": "Curso no válido"}, status=status.HTTP_400_BAD_REQUEST)
         
-        palabrasClave = datos_curso["unidades"].get(unidad)
-        if not palabrasClave:
-            return Response({"error": "Unidad no válida"}, status=status.HTTP_400_BAD_REQUEST)
         
-        palabrasClave = datos_curso.get("contenido", "")
-        vocabulario = datos_curso.get("vocabulario", "")
-        pronunciacion = datos_curso.get("pronunciacion", "")
+        unidad_data = datos_curso["unidades"].get(unidad)
+        if not unidad_data:
+            return Response({"error": "Unidad no válida"}, status=status.HTTP_400_BAD_REQUEST)
+
+        tema = unidad_data.get("tema", "")
+        contenidos = unidad_data.get("contenidos", "")
+        palabrasClave = unidad_data.get("palabras_clave", "")
+        vocabulario = unidad_data.get("vocabulario", "")
+        pronunciacion = unidad_data.get("pronunciacion", "")
         edad = datos_curso.get("edad", 0)
         
         prompt = GenerarPrompt(
             curso,
             unidad,
+            tema,
+            contenidos,
             palabrasClave,
             vocabulario,
             pronunciacion,

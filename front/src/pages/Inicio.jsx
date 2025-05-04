@@ -5,7 +5,7 @@ import { Input } from "../components/input.jsx";
 import { Select } from "../components/select.jsx";
 import { Tarjeta, TarjetaContenido } from "../components/tarjeta.jsx";
 import axios from "axios";
-import contenidos from "../data/contenidos2.json";
+import contenidos from "../data/contenidos.json";
 
 
 //Lista de desplegables compartida para Docente y Alumno
@@ -17,6 +17,7 @@ const unidades = ["Unidad 1", "Unidad 2", "Unidad 3", "Unidad 4"];
 //Lista de desplegables alumno
 const generoMusical = ["Pop", "Rock", "Hip-hop"];
 
+//Funcion principal
 export default function InicioSesion() {
   const [userType, setUserType] = useState("inicio");
   const [canciones, setCanciones] = useState([]);
@@ -24,6 +25,7 @@ export default function InicioSesion() {
   const [cursoSeleccionado, setCursoSeleccionado] = useState("");
   const [tema, setTema] = useState("");
   const [contenido, setContenido] = useState("");
+  const [palabrasClave, setPalabrasClave] = useState("");
   const [pronunciacion, setPronunciacion] = useState("");
   const [vocabulario, setVocabulario] = useState("");
 
@@ -33,12 +35,14 @@ export default function InicioSesion() {
   
     if (datosUnidad) {
       setTema(datosUnidad.tema || "");
-      setContenido(datosUnidad.contenido || "");
+      setContenido(datosUnidad.contenidos || "");
+      setPalabrasClave(datosUnidad.palabras_clave || "");
       setPronunciacion(datosUnidad.pronunciacion || "");
       setVocabulario(datosUnidad.vocabulario || "");
     } else {
       setTema("");
       setContenido("");
+      setPalabrasClave("");
       setPronunciacion("");
       setVocabulario("");
     }
@@ -70,7 +74,7 @@ export default function InicioSesion() {
     }
   };
   
-
+  //Vista sin sesion
   if (userType === "inicio") {
     return (
       <div className="min-h-screen flex items-center justify-center bg-purple-300">
@@ -95,6 +99,7 @@ export default function InicioSesion() {
     );
   }
 
+  //Vista del docente
   if (userType === "docente") {
     return (
       <div className="min-h-screen bg-purple-300 flex items-center justify-center">
@@ -106,6 +111,7 @@ export default function InicioSesion() {
           <Select label="Unidad" items={unidades} onChange={(e) => setUnidadSeleccionada(e.target.value)} value={unidadSeleccionada}/>
           <Select label="Tema" value={tema || "Selecciona curso y unidad"} disabled />
           <Select label="Contenido" value={contenido || "Selecciona curso y unidad"} disabled />
+          <Select label="Palabras clave" value={palabrasClave || "Selecciona curso y unidad"} disabled />
           <Select label="Pronunciación" value={pronunciacion || "Selecciona curso y unidad"} disabled />
           <Select label="Vocabulario" value={vocabulario || "Selecciona curso y unidad"} disabled />
 
@@ -122,7 +128,7 @@ export default function InicioSesion() {
   }
   
   
-
+  //Vista de recomendaciones para el docente
   if (userType === "recomendaciones") {
     return (
       <div className="min-h-screen bg-purple-300 flex items-center justify-center">
@@ -143,6 +149,7 @@ export default function InicioSesion() {
     );
   }
 
+  //Vista del alumno
   if (userType === "alumno") {
     return (
       <div className="min-h-screen bg-purple-300 flex items-center justify-center">
@@ -159,6 +166,7 @@ export default function InicioSesion() {
     );
   }
 
+  //Vista de generacion para el alumno
   if (userType === "cancion") {
     return (
       <div className="min-h-screen bg-purple-300 flex items-center justify-center">
