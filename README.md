@@ -30,7 +30,7 @@ npm install axios</code></pre>
 pip install django-cors-headers
 pip install openai
 pip install python-dotenv
-pip install genai</code></pre>
+pip instalar google-genai</code></pre>
 
 <p>Aplicar migraciones:</p>
 <pre><code>python manage.py makemigrations
