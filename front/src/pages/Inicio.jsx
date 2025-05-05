@@ -57,7 +57,7 @@ export default function InicioSesion() {
   
     try {
 
-      const response = await axios.post("http://192.168.0.2:8000/api/generar-recomendacion/", {
+      const response = await axios.post("http://localhost:8000/api/generar-recomendacion/", {
         curso: cursoSeleccionado,
         unidad: unidadSeleccionada
       }) ;
@@ -65,8 +65,8 @@ export default function InicioSesion() {
       console.log("Respuesta del backend:", response.data);
   
       const listaCanciones = response.data.canciones
-        .split('\n')
-        .filter(c => c.trim() !== "");
+      .split('\n')
+      .filter(c => c.trim() !== "");
       setCanciones(listaCanciones);
       setUserType("recomendaciones");
     } catch (error) {
@@ -77,10 +77,10 @@ export default function InicioSesion() {
   //Vista sin sesion
   if (userType === "inicio") {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-purple-300">
-        <div className="flex flex-col items-center justify-between bg-zinc-900 rounded-2xl p-6 w-full max-w-sm h-[70vh] text-white shadow-lg">
-          <h1 className="text-2xl font-bold text-center mb-2">Aprende inglés con canciones</h1>
-        
+      <div className="min-h-screen w-screen flex items-center justify-center bg-purple-300">
+        <div className="flex flex-col items-center justify-between bg-zinc-900 rounded-2xl p-6 w-full max-w-[400px] h-[70vh] text-white shadow-lg">
+          <h1 className="text-xl sm:text-2xl font-bold text-center mb-2">Aprende inglés con canciones</h1>
+  
           <div className="w-full flex flex-col space-y-4 mt-4">
             <Input placeholder="Usuario" className="bg-white rounded-full text-black" />
             <Input placeholder="Contraseña" type="password" className="bg-white rounded-full text-black" />
@@ -88,27 +88,28 @@ export default function InicioSesion() {
               Ingresar como docente
             </Boton>
           </div>
-          
+  
           <div className="w-full border-t border-white my-4" />
-
-          <Boton variant="outline" className="w-full rounded-full" onClick={() => setUserType("alumno")}>
+  
+          <Boton className="w-full rounded-full" onClick={() => setUserType("alumno")}>
             Ingresar como alumno
           </Boton>
         </div>
       </div>
     );
   }
+  
 
-  //Vista del docente
+
+  // Vista del docente
   if (userType === "docente") {
     return (
-      <div className="min-h-screen bg-purple-300 flex items-center justify-center">
+      <div className="min-h-screen w-screen bg-purple-300 flex items-center justify-center">
+        <Tarjeta className="bg-zinc-900 w-full max-w-4xl p-6 space-y-4 text-white">
+          <h2 className="text-center text-xl sm:text-2xl font-semibold">Seleccione los contenidos</h2>
 
-        <Tarjeta className="bg-zinc-900 w-80 p-4 space-y-2 text-white">
-          <h2 className="text-center text-lg font-semibold">Seleccione los contenidos</h2>
-          
-          <Select label="Curso" items={cursos} onChange={(e) => setCursoSeleccionado(e.target.value)} value={cursoSeleccionado}/>
-          <Select label="Unidad" items={unidades} onChange={(e) => setUnidadSeleccionada(e.target.value)} value={unidadSeleccionada}/>
+          <Select label="Curso" items={cursos} onChange={(e) => setCursoSeleccionado(e.target.value)} value={cursoSeleccionado} />
+          <Select label="Unidad" items={unidades} onChange={(e) => setUnidadSeleccionada(e.target.value)} value={unidadSeleccionada} />
           <Select label="Tema" value={tema || "Selecciona curso y unidad"} disabled />
           <Select label="Contenido" value={contenido || "Selecciona curso y unidad"} disabled />
           <Select label="Palabras clave" value={palabrasClave || "Selecciona curso y unidad"} disabled />
@@ -122,17 +123,15 @@ export default function InicioSesion() {
             Regresar
           </Boton>
         </Tarjeta>
-
       </div>
     );
   }
-  
-  
-  //Vista de recomendaciones para el docente
+
+  // Vista de recomendaciones
   if (userType === "recomendaciones") {
     return (
-      <div className="min-h-screen bg-purple-300 flex items-center justify-center">
-        <Tarjeta className="bg-zinc-900 w-80 p-4 text-white">
+      <div className="min-h-screen w-screen bg-purple-300 flex items-center justify-center">
+        <Tarjeta className="bg-zinc-900 w-full max-w-[400px] p-4 text-white">
           <h2 className="text-center text-sm bg-purple-600 rounded-t-xl py-1">Top 5 canciones que te servirán</h2>
           <TarjetaContenido className="bg-white text-black rounded-b-xl py-3">
             <ol className="space-y-2">
@@ -149,29 +148,29 @@ export default function InicioSesion() {
     );
   }
 
-  //Vista del alumno
+  // Vista del alumno
   if (userType === "alumno") {
     return (
-      <div className="min-h-screen bg-purple-300 flex items-center justify-center">
-        <Tarjeta className="bg-zinc-900 w-80 p-4 space-y-2 text-white">
-          <h2 className="text-center">Seleccione los contenidos</h2>
+      <div className="min-h-screen w-screen bg-purple-300 flex items-center justify-center">
+        <Tarjeta className="bg-zinc-900 w-full max-w-[400px] p-4 space-y-2 text-white">
+          <h2 className="text-center text-xl sm:text-2xl">Seleccione los contenidos</h2>
           <Select label="Curso" items={cursos} />
           <Select label="Unidad" items={unidades} />
           <Select label="Vocabulario" items={vocabulario} />
           <Select label="Género Musical" items={generoMusical} />
           <Boton className="w-full rounded-full bg-purple-500" onClick={() => setUserType("cancion")}>Generar</Boton>
-          <Boton variant="outline" className="w-full rounded-full" onClick={() => setUserType("inicio")}>Regresar</Boton>
+          <Boton className="w-full rounded-full" onClick={() => setUserType("inicio")}>Regresar</Boton>
         </Tarjeta>
       </div>
     );
   }
 
-  //Vista de generacion para el alumno
+  // Vista de canción generada
   if (userType === "cancion") {
     return (
-      <div className="min-h-screen bg-purple-300 flex items-center justify-center">
-        <Tarjeta className="bg-zinc-900 w-80 text-white">
-          <h2 className="text-center bg-purple-600 py-1 rounded-t-xl">Aquí está tu canción</h2>
+      <div className="min-h-screen w-screen bg-purple-300 flex items-center justify-center">
+        <Tarjeta className="bg-zinc-900 w-full max-w-[400px] text-white">
+          <h2 className="text-center bg-purple-600 py-1 rounded-t-xl text-lg">Aquí está tu canción</h2>
           <TarjetaContenido className="bg-white text-black rounded-b-xl p-4">
             <p><strong>Nombre:</strong> Shape of You</p>
             <p><strong>Letra:</strong></p>
@@ -183,6 +182,5 @@ export default function InicioSesion() {
       </div>
     );
   }
-
   return null;
-}
+  }

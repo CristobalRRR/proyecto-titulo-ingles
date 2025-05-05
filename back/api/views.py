@@ -4,10 +4,15 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from openai import OpenAI
+from google import genai
+from google.genai import types
 import json
 import os
 
-client = OpenAI(api_key=settings.OPENAI_API_KEY)
+clientOpenAI = OpenAI(api_key=settings.OPENAI_API_KEY)
+clientDeepSeek = OpenAI(api_key=settings.DEEPSEEK_API_KEY, base_url="https://api.deepseek.com/v1")
+clientGemini = genai.Client(api_key=settings.GEMINI_API_KEY)
+
 json_contenidos = os.path.join(os.path.dirname(__file__), "../contenidos.json")
 with open(json_contenidos, "r", encoding="utf-8") as f:
     datos_cursos = json.load(f)
@@ -57,17 +62,48 @@ class GenerarRecomendacionAPIView(APIView):
         )
         
         try:
-            respuesta = client.chat.completions.create(
+            '''respuestaDeepSeek = clientDeepSeek.chat.completions.create(
+                model="deepseek-chat",
+                messages=[
+                    {"role": "system", "content": "Eres un experto en docencia de inglés usando música.\n"},
+                    {"role": "user", "content": prompt},
+                    ],
+                max_tokens=500,
+                temperature=0.7,
+            )
+            cancionesDeepSeek = respuestaDeepSeek.choices[0].message.content'''
+        
+            '''respuestaOpenai = clientOpenAI.chat.completions.create(
                 model="gpt-3.5-turbo",
                 messages=[
-                        {"role": "system", "content": "Eres un asistente de educación especializado en enseñanza de inglés usando música."},
+                        {"role": "system", "content": "Eres un experto en docencia de inglés usando música.\n"},
                         {"role": "user", "content": prompt}
                     ],
                 max_tokens=500,
                 temperature=0.7
         )
-            canciones = respuesta.choices[0].message.content
-            return Response({"canciones": canciones}, status=status.HTTP_200_OK)
+            cancionesOpenai = respuestaOpenai.choices[0].message.content'''
+            '''
+            Bloque de idea
+            todasLasRespuestas = str(cancionesOpenai + \n +cancionesDeepSeek)
+            respuestaMegazord: llamarApi(
+                model=algo
+                message=[{role, sistem, content: "A partir de las listas de canciones, identifica las 5 canciones que mas se repiten respetando el formato de una lista sin ningún texto extra: [N° Canción]. [Nombre de la canción] - [Nombre del artista]"},
+                {role, user, content: todasLasRespuestas}
+                ]
+            )
+            top5repetidas = respuestaMegazord.choices[0].message.content
+            '''
+            respuestaGemini = clientGemini.models.generate_content(
+            model="gemini-2.0-flash",
+            contents=[prompt],
+            config=types.GenerateContentConfig(
+            max_output_tokens=500,
+            temperature=0.7
+    )
+            )
+            cancionesGemini = respuestaGemini.text
+            return Response({"canciones": cancionesGemini}, status=status.HTTP_200_OK)
 
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

@@ -21,6 +21,8 @@ ALLOWED_HOSTS = ["localhost","192.168.0.2"]
 # Application definition
 load_dotenv()
 OPENAI_API_KEY=os.getenv("OPENAI_API_KEY")
+DEEPSEEK_API_KEY=os.getenv("DEEPSEEK_API_KEY")
+GEMINI_API_KEY=os.getenv("GEMINI_API_KEY")
 
 INSTALLED_APPS = [
     'django.contrib.admin',
