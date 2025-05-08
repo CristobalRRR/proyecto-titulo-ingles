@@ -134,14 +134,24 @@ export default function InicioSesion() {
         <Tarjeta className="bg-zinc-900 w-full max-w-[400px] p-4 text-white">
           <h2 className="text-center text-sm bg-purple-600 rounded-t-xl py-1">Top 5 canciones que te servirán</h2>
           <TarjetaContenido className="bg-white text-black rounded-b-xl py-3">
-            <ol className="space-y-2">
-              {canciones.map((cancion, i) => (
-                <li key={i} className="flex justify-between items-center">
-                  {cancion} <span className="bg-red-500 text-white px-2 py-1 rounded-full text-xs">PDF</span>
-                </li>
-              ))}
-            </ol>
-            <Boton className="w-full mt-4 bg-purple-500 rounded-full" onClick={() => setUserType("docente")}>Regresar</Boton>
+          <ol className="space-y-2">
+            {canciones.map((cancion, i) => (
+            <li key={i} className="flex justify-between items-center gap-2">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2">
+                <span>{cancion}</span>
+                <a className="text-blue-600 underline text-sm"
+                href={"https://www.youtube.com/results?search_query=" + encodeURIComponent(cancion)} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                >
+                Link a YouTube
+                </a>
+              </div>
+            <span className="bg-red-500 text-white px-2 py-1 rounded-full text-xs">PDF</span>
+          </li>
+          ))}
+        </ol>
+          <Boton className="w-full mt-4 bg-purple-500 rounded-full" onClick={() => setUserType("docente")}>Regresar</Boton>
           </TarjetaContenido>
         </Tarjeta>
       </div>
