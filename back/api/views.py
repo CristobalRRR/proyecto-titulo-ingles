@@ -120,8 +120,53 @@ class GenerarRecomendacionAPIView(APIView):
             cancionesFinales = respuestaFinal.choices[0].message.content
             print("Canciones finales:\n", cancionesFinales)
 
-            return Response({"canciones": cancionesFinales}, status=status.HTTP_200_OK)
+            return Response({
+                    "canciones": cancionesFinales,
+                    "parametros": {
+                        "curso": curso,
+                        "unidad": unidad,
+                        "tema": tema,
+                        "contenidos": contenidos,
+                        "palabras_clave": palabrasClave,
+                        "pronunciacion": pronunciacion,
+                        "vocabulario": vocabulario
+                    }
+                 }, status=status.HTTP_200_OK)
 
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+class GenerarLetraPDFAPIView(APIView):
+    def post(self, request):
+        cancion_completa = request.data.get("cancion")
+        parametros = request.data.get("parametros")
 
+        if not cancion_completa or not parametros:
+            return Response({"error": "Datos incompletos"}, status=400)
+
+        partes = cancion_completa.split(" - ")
+        if len(partes) < 2:
+            return Response({"error": "Formato de canción inválido"}, status=400)
+        
+        nombre_cancion = partes[1].strip()
+        artista = partes[0].split(". ")[1].strip() if ". " in partes[0] else partes[0].strip()
+
+        prompt = (
+            f"Dame la letra de la canción '{nombre_cancion}' del artista '{artista}' en formato verso a verso. "
+            f"No incluyas comentarios extra de ningún tipo."
+        )
+
+        try:
+            respuesta = clientOpenAI.chat.completions.create(
+                model="gpt-3.5-turbo",
+                messages=[
+                    {"role": "system", "content": "Eres un asistente educativo especializado en enseñar inglés con canciones."},
+                    {"role": "user", "content": prompt}
+                ],
+                max_tokens=1000,
+                temperature=0.5,
+            )
+            letra = respuesta.choices[0].message.content
+            return Response({ "letra": letra })
+        except Exception as e:
+            return Response({ "error": str(e) }, status=500)

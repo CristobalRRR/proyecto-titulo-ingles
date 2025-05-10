@@ -6,6 +6,7 @@ import { Select } from "../components/select.jsx";
 import { Tarjeta, TarjetaContenido } from "../components/tarjeta.jsx";
 import axios from "axios";
 import contenidos from "../data/contenidos.json";
+import { generarPDF } from "../utils/pdf.js";
 
 
 //Lista de desplegables compartida para Docente y Alumno
@@ -19,8 +20,14 @@ const generoMusical = ["Pop", "Rock", "Hip-hop"];
 
 //Funcion principal
 export default function InicioSesion() {
+
+  //Usuarios entre sin sesion, docente y alumno
   const [userType, setUserType] = useState("inicio");
+
+  //Lista de canciones generadas
   const [canciones, setCanciones] = useState([]);
+
+  //Datos utilizados para la recomendacion de canciones
   const [unidadSeleccionada, setUnidadSeleccionada] = useState("");
   const [cursoSeleccionado, setCursoSeleccionado] = useState("");
   const [tema, setTema] = useState("");
@@ -28,6 +35,9 @@ export default function InicioSesion() {
   const [palabrasClave, setPalabrasClave] = useState("");
   const [pronunciacion, setPronunciacion] = useState("");
   const [vocabulario, setVocabulario] = useState("");
+
+  //Parametros es para adquirir los datos al generar el pdf
+  const [parametros, setParametros] = useState(null);
 
   useEffect(() => {
     const datosCurso = contenidos[cursoSeleccionado];
@@ -51,7 +61,7 @@ export default function InicioSesion() {
 
   const generarRecomendaciones = async () => {
     if (!cursos.includes(cursoSeleccionado) || !unidades.includes(unidadSeleccionada)) {
-      console.error("Curso o unidad no válidos");
+      alert("Curso o unidad no válidos");
       return;
     }
   
@@ -68,8 +78,11 @@ export default function InicioSesion() {
       .split('\n')
       .filter(c => c.trim() !== "");
       setCanciones(listaCanciones);
+
+      setParametros(response.data.parametros)
       setUserType("recomendaciones");
     } catch (error) {
+      alert("Error generando recomendaciones")
       console.error("Error generando recomendaciones:", error);
     }
   };
@@ -147,7 +160,31 @@ export default function InicioSesion() {
                 Link a YouTube
                 </a>
               </div>
-            <span className="bg-red-500 text-white px-2 py-1 rounded-full text-xs">PDF</span>
+                <span
+                onClick={async () => {
+                  try {
+                    const res = await axios.post("http://localhost:8000/api/generar-letra-pdf/", {
+                      cancion: cancion,
+                      parametros: parametros
+                    });
+
+                    if (res.data && res.data.letra) {
+                      generarPDF({
+                        ...parametros,
+                        cancion: cancion.split(" - ")[1].trim(),
+                        artista: cancion.split(" - ")[0].replace(/^\d+\.\s*/, "").trim(),
+                        letra: res.data.letra
+                      });
+                    }
+                  } catch (error) {
+                    alert("Error generando PDF")
+                    console.error("Error generando PDF:", error);
+                  }
+                }}
+                className="bg-red-500 text-white px-2 py-1 rounded-full text-xs cursor-pointer"
+                >
+                  PDF
+                </span>
           </li>
           ))}
         </ol>
