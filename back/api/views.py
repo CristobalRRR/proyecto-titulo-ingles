@@ -170,3 +170,66 @@ class GenerarLetraPDFAPIView(APIView):
             return Response({ "letra": letra })
         except Exception as e:
             return Response({ "error": str(e) }, status=500)
+
+
+'''NICO'''
+def GenerarPromptCancionOriginal(curso, unidad, tema, contenidos, vocabulario, pronunciacion, edad):
+    prompt = (
+        f"Eres un compositor de canciones infantiles educativas. Crea una canción original en inglés para estudiantes de {edad} años del curso {curso}. "
+        f"La canción debe estar basada en la unidad '{unidad}' llamada '{tema}'. Los contenidos a enseñar son: {contenidos}. "
+        f"Incluye este vocabulario: {vocabulario}. Refuerza la pronunciación de la letra '{pronunciacion}' en las palabras. "
+        f"Debe ser alegre, fácil de cantar, y adecuada para niños, sin lenguaje ofensivo ni nombres propios. "
+        f"Devuelve solo la letra en formato verso a verso, sin explicaciones ni encabezados."
+    )
+    return prompt
+
+
+class GenerarCancionOriginalAPIView(APIView):
+    def post(self, request):
+        curso = request.data.get("curso")
+        unidad = request.data.get("unidad")
+
+        datosCurso = datosCursos.get(curso)
+        if not datosCurso:
+            return Response({"error": "Curso no válido"}, status=status.HTTP_400_BAD_REQUEST)
+
+        unidadData = datosCurso["unidades"].get(unidad)
+        if not unidadData:
+            return Response({"error": "Unidad no válida"}, status=status.HTTP_400_BAD_REQUEST)
+
+        tema = unidadData.get("tema", "")
+        contenidos = unidadData.get("contenidos", "")
+        vocabulario = unidadData.get("vocabulario", "")
+        pronunciacion = unidadData.get("pronunciacion", "")
+        edad = datosCurso.get("edad", 0)
+
+        prompt = GenerarPromptCancionOriginal(
+            curso, unidad, tema, contenidos, vocabulario, pronunciacion, edad
+        )
+
+        try:
+            respuesta = clientOpenAI.chat.completions.create(
+                model="gpt-3.5-turbo",  # o "gpt-4" si tienes acceso
+                messages=[
+                    {"role": "system", "content": "Eres un compositor de canciones educativas en inglés para niños."},
+                    {"role": "user", "content": prompt}
+                ],
+                max_tokens=700,
+                temperature=0.8,
+            )
+            letra = respuesta.choices[0].message.content
+            return Response({
+                "letra": letra,
+                "parametros": {
+                    "curso": curso,
+                    "unidad": unidad,
+                    "tema": tema,
+                    "contenidos": contenidos,
+                    "vocabulario": vocabulario,
+                    "pronunciacion": pronunciacion,
+                    "edad": edad
+                }
+            })
+
+        except Exception as e:
+            return Response({"error": str(e)}, status=500)

@@ -16,7 +16,7 @@ const cursos = ["1° Básico", "2° Básico", "3° Básico", "4° Básico", "5°
 const unidades = ["Unidad 1", "Unidad 2", "Unidad 3", "Unidad 4"];
 
 //Lista de desplegables alumno
-const generoMusical = ["Pop", "Rock", "Hip-hop"];
+//const generoMusical = ["Pop", "Rock", "Hip-hop"];
 
 //Funcion principal
 export default function InicioSesion() {
@@ -58,7 +58,30 @@ export default function InicioSesion() {
     }
   }, [cursoSeleccionado, unidadSeleccionada]);
 
+  
+  const [letraCancion, setLetraCancion] = useState("");
 
+  //NICO generar cancion probando cosas 
+  const generarCancionOriginal = async () => {    
+    try {
+      const response = await axios.post("http://localhost:8000/api/generar-cancion-original/", {
+        curso: cursoSeleccionado,
+        unidad: unidadSeleccionada,
+      });
+  
+      if (response.data && response.data.letra) {
+        setLetraCancion(response.data.letra);
+      } else {
+        alert("No se generó ninguna letra.");
+      }
+    } catch (error) {
+      console.error("Error al generar canción:", error);
+      alert("Ocurrió un error.");
+    }
+  };
+  
+
+  //generar recomendaciones
   const generarRecomendaciones = async () => {
     if (!cursos.includes(cursoSeleccionado) || !unidades.includes(unidadSeleccionada)) {
       alert("Curso o unidad no válidos");
@@ -195,22 +218,40 @@ export default function InicioSesion() {
     );
   }
 
-  // Vista del alumno
+  // Vista del alumno NICO
   if (userType === "alumno") {
     return (
       <div className="min-h-screen w-screen bg-purple-300 flex items-center justify-center">
         <Tarjeta className="bg-zinc-900 w-full max-w-[400px] p-4 space-y-2 text-white">
-          <h2 className="text-center text-xl sm:text-2xl">Seleccione los contenidos</h2>
-          <Select label="Curso" items={cursos} />
-          <Select label="Unidad" items={unidades} />
-          <Select label="Vocabulario" items={vocabulario} />
-          <Select label="Género Musical" items={generoMusical} />
-          <Boton className="w-full rounded-full bg-purple-500" onClick={() => setUserType("cancion")}>Generar</Boton>
-          <Boton className="w-full rounded-full" onClick={() => setUserType("inicio")}>Regresar</Boton>
-        </Tarjeta>
-      </div>
-    );
-  }
+          <h2 className="text-center text-xl sm:text-2xl">Generar canción educativa</h2>
+          <Select
+          label="Selecciona Curso"
+          items={cursos}
+          value={cursoSeleccionado}
+          onChange={(e) => setCursoSeleccionado(e.target.value)}
+        />
+        <Select
+          label="Selecciona Unidad"
+          items={unidades}
+          value={unidadSeleccionada}
+          onChange={(e) => setUnidadSeleccionada(e.target.value)}
+        />
+
+        <Boton className="w-full bg-purple-600" onClick={generarCancionOriginal}>
+          Generar canción
+        </Boton>
+
+        {letraCancion && (
+          <div className="bg-white text-black p-4 rounded-xl">
+            <h3 className="text-lg font-bold mb-2">Letra generada:</h3>
+            <pre className="whitespace-pre-wrap text-sm">{letraCancion}</pre>
+          </div>
+        )}
+        <Boton className="w-full mt-4 bg-purple-500 rounded-full" onClick={() => setUserType("inicio")}>Regresar</Boton>
+      </Tarjeta>
+    </div>
+  );
+}
 
   // Vista de canción generada
   if (userType === "cancion") {
@@ -221,7 +262,7 @@ export default function InicioSesion() {
           <TarjetaContenido className="bg-white text-black rounded-b-xl p-4">
             <p><strong>Nombre:</strong> Shape of You</p>
             <p><strong>Letra:</strong></p>
-            <p className="text-sm">I'm in love with the shape of you... 🎶</p>
+            <p className="text-sm">I'm in love with the shape of you... 🎶</p>            
             <p className="mt-2"><strong>Audio (por verse):</strong> <Boton className="bg-blue-600 text-white px-2 py-1 rounded">Reproducir 🔊</Boton></p>
             <Boton className="w-full mt-4 bg-purple-500 rounded-full" onClick={() => setUserType("alumno")}>Regresar</Boton>
           </TarjetaContenido>
