@@ -2,16 +2,18 @@ import { jsPDF } from "jspdf";
 
 export const generarPDF = ({ curso, unidad, tema, contenidos, palabras_clave, pronunciacion, vocabulario, cancion, artista, letra }) => {
   const doc = new jsPDF();
-
-  const margen = 10;
+  const margen = 15;
   let y = margen;
 
   const agregarTexto = (label, valor) => {
     doc.setFont("helvetica", "bold");
+    doc.setFontSize(12);
     doc.text(`${label}:`, margen, y);
     doc.setFont("helvetica", "normal");
-    doc.text(valor, margen + 30, y);
-    y += 8;
+    doc.setFontSize(11);
+    const textLines = doc.splitTextToSize(valor, 180);
+    doc.text(textLines, margen + 30, y);
+    y += 8 + (textLines.length - 1) * 6;
   };
 
   agregarTexto("Curso", curso);
@@ -20,11 +22,13 @@ export const generarPDF = ({ curso, unidad, tema, contenidos, palabras_clave, pr
   agregarTexto("Palabras clave", palabras_clave);
   agregarTexto("Pronunciación", pronunciacion);
   agregarTexto("Vocabulario", vocabulario);
-  agregarTexto("Canción", cancion);
+  agregarTexto("Canción", `"${cancion}"`);
   agregarTexto("Autor", artista);
 
-  y += 4;
+  // Sección Letra
+  y += 10;
   doc.setFont("helvetica", "bold");
+  doc.setFontSize(13);
   doc.text("Letra:", margen, y);
   y += 8;
 
@@ -35,6 +39,7 @@ export const generarPDF = ({ curso, unidad, tema, contenidos, palabras_clave, pr
       y = margen;
     }
     doc.setFont("helvetica", "normal");
+    doc.setFontSize(11);
     doc.text(lineas[i], margen, y);
     y += 6;
   }
