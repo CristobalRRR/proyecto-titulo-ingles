@@ -23,6 +23,8 @@ load_dotenv()
 OPENAI_API_KEY=os.getenv("OPENAI_API_KEY")
 DEEPSEEK_API_KEY=os.getenv("DEEPSEEK_API_KEY")
 GEMINI_API_KEY=os.getenv("GEMINI_API_KEY")
+LYRICS_API_USER_ID=os.getenv("LYRICS_API_USER_ID")
+LYRICS_API_TOKEN=os.getenv("LYRICS_API_TOKEN")
 
 INSTALLED_APPS = [
     'django.contrib.admin',

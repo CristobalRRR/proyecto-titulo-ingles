@@ -194,8 +194,8 @@ export default function InicioSesion() {
                     if (res.data && res.data.letra) {
                       generarPDF({
                         ...parametros,
-                        cancion: cancion.split(" - ")[1].trim(),
-                        artista: cancion.split(" - ")[0].replace(/^\d+\.\s*/, "").trim(),
+                        cancion: cancion.split(" - ")[0].replace(/^\d+\.\s*/, "").trim(),
+                        artista: cancion.split(" - ")[1].trim(),
                         letra: res.data.letra
                       });
                     }
@@ -236,6 +236,9 @@ export default function InicioSesion() {
           value={unidadSeleccionada}
           onChange={(e) => setUnidadSeleccionada(e.target.value)}
         />
+
+        <Select label="Tema" value={tema || "Selecciona curso y unidad"} disabled />
+
 
         <Boton className="w-full bg-purple-600" onClick={generarCancionOriginal}>
           Generar canción

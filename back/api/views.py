@@ -8,14 +8,19 @@ from google import genai
 from google.genai import types
 import json
 import os
+import requests
+import urllib.parse
 
 clientOpenAI = OpenAI(api_key=settings.OPENAI_API_KEY)
 clientDeepSeek = OpenAI(api_key=settings.DEEPSEEK_API_KEY, base_url="https://api.deepseek.com/v1")
 clientGemini = genai.Client(api_key=settings.GEMINI_API_KEY)
+idLyricsAPI = settings.LYRICS_API_USER_ID
+tokenLyricsAPI = settings.LYRICS_API_TOKEN
 
 jsonContenidos = os.path.join(os.path.dirname(__file__), "../contenidos.json")
 with open(jsonContenidos, "r", encoding="utf-8") as f:
     datosCursos = json.load(f)
+
 
 def GenerarPrompt(curso, unidad, tema, contenidos, palabrasClave, vocabulario, pronunciacion, edad):
         prompt = (
@@ -136,7 +141,7 @@ class GenerarRecomendacionAPIView(APIView):
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
-class GenerarLetraPDFAPIView(APIView):
+'''class GenerarLetraPDFAPIView(APIView):
     def post(self, request):
         cancion_completa = request.data.get("cancion")
         parametros = request.data.get("parametros")
@@ -169,7 +174,60 @@ class GenerarLetraPDFAPIView(APIView):
             letra = respuesta.choices[0].message.content
             return Response({ "letra": letra })
         except Exception as e:
-            return Response({ "error": str(e) }, status=500)
+            return Response({ "error": str(e) }, status=500)'''
+
+class GenerarLetraPDFAPIView(APIView):
+    def post(self, request):
+        cancion_completa = request.data.get("cancion")
+        parametros = request.data.get("parametros")
+
+        if not cancion_completa or not parametros:
+            return Response({"error": "Datos incompletos"}, status=400)
+
+        partes = cancion_completa.split(" - ")
+        if len(partes) < 2:
+            return Response({"error": "Formato de canción inválido"}, status=400)
+        
+        a = partes[1].strip()
+        n = partes[0].split(". ")[1].strip() if ". " in partes[0] else partes[0].strip()
+
+        artista = a.replace('"', '')
+        nombre_cancion = n.replace('"', '')
+
+        print(nombre_cancion,": cancion")
+        print(artista, ": artista")
+        print(idLyricsAPI,": uid")
+        print(tokenLyricsAPI,": token")
+        url = "https://www.stands4.com/services/v2/lyrics.php"
+        params = {
+            "uid": idLyricsAPI,
+            "tokenid": tokenLyricsAPI,
+            "term": nombre_cancion,
+            "artist": artista,
+            "format": "json"
+        }
+
+        headers ={
+            "User-Agent": "Mozilla/5.0"
+
+        }
+
+        try:
+            response = requests.get(url, params=params, headers=headers)
+            print(url)
+            print(response)
+            if response.status_code == 200:
+                data = response.json()
+                print(data)
+                results = data.get("result", [])
+                if not results:
+                    return Response({"letra": "No se encontró la letra"}, status=404)
+                song_link = results[0].get("song-link")
+                return Response({"letra": song_link})
+            else:
+                return Response({"letra": "Error al consultar Lyrics.com"}, status=response.status_code)
+        except Exception as e:
+            return Response({"error": str(e)}, status=500)
 
 
 '''NICO'''
