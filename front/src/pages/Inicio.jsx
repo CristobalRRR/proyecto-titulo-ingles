@@ -135,33 +135,31 @@ export default function InicioSesion() {
     );
   }
   
-
-
-  // Vista del docente
-  if (userType === "docente") {
-    return (
-      <div className="min-h-screen w-screen bg-purple-300 flex items-center justify-center">
-        <Tarjeta className="bg-zinc-900 w-full max-w-4xl p-6 space-y-4 text-white">
-          <h2 className="text-center text-xl sm:text-2xl font-semibold">Seleccione los contenidos</h2>
-
-          <Select label="Curso" items={cursos} onChange={(e) => setCursoSeleccionado(e.target.value)} value={cursoSeleccionado} />
-          <Select label="Unidad" items={unidades} onChange={(e) => setUnidadSeleccionada(e.target.value)} value={unidadSeleccionada} />
-          <Select label="Tema" value={tema || "Selecciona curso y unidad"} disabled />
-          <Select label="Contenido" value={contenido || "Selecciona curso y unidad"} disabled />
-          <Select label="Palabras clave" value={palabrasClave || "Selecciona curso y unidad"} disabled />
-          <Select label="Pronunciación" value={pronunciacion || "Selecciona curso y unidad"} disabled />
-          <Select label="Vocabulario" value={vocabulario || "Selecciona curso y unidad"} disabled />
-
-          <Boton className="w-full rounded-full bg-purple-500" onClick={generarRecomendaciones}>
-            Recomendar
-          </Boton>
-          <Boton variant="outline" className="w-full rounded-full" onClick={() => setUserType("inicio")}>
-            Regresar
-          </Boton>
-        </Tarjeta>
-      </div>
-    );
-  }
+    // Vista del docente
+    if (userType === "docente") {
+      return (
+        <div className="min-h-screen w-screen bg-purple-300 flex items-center justify-center">
+          <Tarjeta className="bg-zinc-900 w-full max-w-4xl p-6 space-y-4 text-white">
+            <h2 className="text-center text-xl sm:text-2xl font-semibold">Seleccione los contenidos</h2>
+  
+            <Select label="Curso" items={cursos} onChange={(e) => setCursoSeleccionado(e.target.value)} value={cursoSeleccionado} />
+            <Select label="Unidad" items={unidades} onChange={(e) => setUnidadSeleccionada(e.target.value)} value={unidadSeleccionada} />
+            <Select label="Tema" value={tema || "Selecciona curso y unidad"} disabled />
+            <Select label="Contenido" value={contenido || "Selecciona curso y unidad"} disabled />
+            <Select label="Palabras clave" value={palabrasClave || "Selecciona curso y unidad"} disabled />
+            <Select label="Pronunciación" value={pronunciacion || "Selecciona curso y unidad"} disabled />
+            <Select label="Vocabulario" value={vocabulario || "Selecciona curso y unidad"} disabled />
+  
+            <Boton className="w-full rounded-full bg-purple-500" onClick={generarRecomendaciones}>
+              Recomendar
+            </Boton>
+            <Boton variant="outline" className="w-full rounded-full" onClick={() => setUserType("inicio")}>
+              Regresar
+            </Boton>
+          </Tarjeta>
+        </div>
+      );
+    }
 
   // Vista de recomendaciones
   if (userType === "recomendaciones") {

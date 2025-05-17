@@ -17,7 +17,8 @@
 <p>Instalar dependencias:</p>
 <pre><code>npm install
 npm install axios
-npm install jspdf</code></pre>
+npm install jspdf
+npm install firebase</code></pre>
 
 <p>Correr el servidor de desarrollo:</p>
 <pre><code>npm run dev</code></pre>

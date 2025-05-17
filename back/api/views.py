@@ -16,6 +16,7 @@ clientDeepSeek = OpenAI(api_key=settings.DEEPSEEK_API_KEY, base_url="https://api
 clientGemini = genai.Client(api_key=settings.GEMINI_API_KEY)
 idLyricsAPI = settings.LYRICS_API_USER_ID
 tokenLyricsAPI = settings.LYRICS_API_TOKEN
+topMediaAPI = settings.TOPMEDIA_API_KEY
 
 jsonContenidos = os.path.join(os.path.dirname(__file__), "../contenidos.json")
 with open(jsonContenidos, "r", encoding="utf-8") as f:
