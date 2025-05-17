@@ -2,7 +2,7 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBLdreKU0AQ4PMkgcgsmDERtOV3djG0qeI",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: "pti-db.firebaseapp.com",
   databaseURL: "https://pti-db-default-rtdb.firebaseio.com",
   projectId: "pti-db",
