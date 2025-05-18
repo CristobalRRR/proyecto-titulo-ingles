@@ -1,32 +1,39 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Boton } from "../components/boton";
 import { Input } from "../components/input";
 import { doSignInWithEmailAndPassword } from "../firebase/auth";
+import { useAuth } from "../contexts/authContext/index";
 
-export default function Login() {
+export default function Login({ setUserType }) {
+    const { userLoggedIn } = useAuth();
     const navigate = useNavigate();
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [isSigningIn, setIsSigningIn] = useState(false);
+
+    useEffect(() => {
+      if (userLoggedIn) {
+        setUserType("docente");
+        navigate("/docente");
+      }
+    }, [userLoggedIn, navigate]);
 
     const onSubmit = async (e) => {
-        e.preventDefault()
-        if (!isSigningIn){
-            setIsSigningIn(true)
-            try {
-                await doSignInWithEmailAndPassword(email, password);
-                console.log("email: ", email);
-                console.log("password: ", password)
-                navigate("/docente");
-              } catch (error) {
-                console.error("Error al iniciar sesión:", error.code, error.message);
-                alert(`Error: ${error.code}`);
-              } finally {
-                setIsSigningIn(false);
-              }
-            }
-          };
+      e.preventDefault();
+      try {
+        await doSignInWithEmailAndPassword(email, password);
+      } catch (err) {
+        alert("Credenciales incorrectas");
+        console.error(err);
+      }
+    };
+
+    const accesoAlumno = () => {
+      setUserType("alumno");
+      navigate("/alumno");
+    };
+  
   
     return (
       <div className="min-h-screen w-screen flex items-center justify-center bg-purple-300">
@@ -39,7 +46,7 @@ export default function Login() {
           </div>
   
           <div className="w-full border-t border-white my-4" />
-          <Boton className="w-full" variant="outline" onClick={() => navigate("/alumno")}>Ingresar como alumno</Boton>
+          <Boton className="w-full" onClick={accesoAlumno}>Ingresar como alumno</Boton>
         </div>
       </div>
     );

@@ -2,23 +2,37 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Select } from "../components/select";
 import { Boton } from "../components/boton";
-import { Tarjeta } from "../components/tarjeta";
+import { Tarjeta, TarjetaContenido } from "../components/tarjeta";
 import contenidos from "../data/contenidos.json";
 import { generarPDF } from "../utils/pdf.js";
+import { doSignOut } from "../firebase/auth";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/authContext/index.jsx";
 
 const cursos = ["1° Básico", "2° Básico", "3° Básico", "4° Básico", "5° Básico",
     "6° Básico", "7° Básico", "8° Básico", "1° Medio", "2° Medio", "3° Medio", "4° Medio"];
 const unidades = ["Unidad 1", "Unidad 2", "Unidad 3", "Unidad 4"];
 
-export default function Docente({ setUserType, setCanciones, setParametros }) {
-    const [cursoSeleccionado, setCursoSeleccionado] = useState("");
-    const [unidadSeleccionada, setUnidadSeleccionada] = useState("");
+export default function Docente({
+  userType,
+  setUserType,
+  cursoSeleccionado,
+  setCursoSeleccionado,
+  unidadSeleccionada,
+  setUnidadSeleccionada,
+  canciones,
+  setCanciones,
+  parametros,
+  setParametros
+}) {
+    const navigate = useNavigate();
+    const { currentUser } = useAuth();
     const [tema, setTema] = useState("");
     const [contenido, setContenido] = useState("");
     const [palabrasClave, setPalabrasClave] = useState("");
     const [pronunciacion, setPronunciacion] = useState("");
     const [vocabulario, setVocabulario] = useState("");
-  
+
     useEffect(() => {
       const datosCurso = contenidos[cursoSeleccionado];
       const datosUnidad = datosCurso?.unidades?.[unidadSeleccionada];
@@ -70,7 +84,28 @@ export default function Docente({ setUserType, setCanciones, setParametros }) {
           console.error("Error generando recomendaciones:", error);
         }
       };
-    if (userType === "docente") {
+
+      const handleLogout = async () => {
+        await doSignOut();
+        navigate("/");
+      };
+    
+    if (!currentUser){
+      return(
+        <div className="min-h-screen w-screen flex items-center justify-center">
+        <p>
+        <img src="../public/no.jfif"></img>
+        Sesión no autenticada, inicie sesión correctamente por favor
+        <Boton className="w-full rounded-full bg-purple-500" onClick={handleLogout}>
+            Regresar
+        </Boton>
+        </p>
+
+        </div>
+      )
+    }
+
+    if (userType === "docente"){
     return (
       <div className="min-h-screen w-screen bg-purple-300 flex items-center justify-center">
         <Tarjeta className="bg-zinc-900 w-full max-w-4xl p-6 space-y-4 text-white">
@@ -89,11 +124,16 @@ export default function Docente({ setUserType, setCanciones, setParametros }) {
           >
             Recomendar
           </Boton>
+          <Boton className="w-full rounded-full bg-purple-500" onClick={handleLogout}>
+            Cerrar sesión
+          </Boton>
         </Tarjeta>
       </div>
     );
-}
-    if (userType === "recomendaciones") {
+  }
+
+      
+  if (userType === "recomendaciones") {
     return (
             <div className="min-h-screen w-screen bg-purple-300 flex items-center justify-center">
               <Tarjeta className="bg-zinc-900 w-full max-w-[400px] p-4 text-white">
@@ -146,5 +186,6 @@ export default function Docente({ setUserType, setCanciones, setParametros }) {
             </div>
           );
         }
-    }
-  
+      
+      return null;
+}
