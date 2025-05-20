@@ -18,7 +18,9 @@
 <pre><code>npm install
 npm install axios
 npm install jspdf
-npm install firebase</code></pre>
+npm install firebase
+npm install framer-motion </code></pre>
+
 
 <p>Correr el servidor de desarrollo:</p>
 <pre><code>npm run dev</code></pre>

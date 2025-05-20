@@ -5,6 +5,7 @@ import { Boton } from "../components/boton";
 import { Tarjeta, TarjetaContenido } from "../components/tarjeta";
 import contenidos from "../data/contenidos.json";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 const cursos = ["1° Básico", "2° Básico", "3° Básico", "4° Básico", "5° Básico",
     "6° Básico", "7° Básico", "8° Básico", "1° Medio", "2° Medio", "3° Medio", "4° Medio"];
@@ -89,30 +90,57 @@ export default function Alumno({
     </div>
     );
     }
+    
+    
+
     if (userType === "cancion") {
-        return (
-          <div className="min-h-screen w-screen bg-purple-300 flex items-center justify-center px-4">
-            <Tarjeta className="bg-zinc-900 w-full max-w-3xl p-6 text-white rounded-xl shadow-lg">
-              <h2 className="text-xl sm:text-2xl font-bold text-center mb-4">Aquí está tu canción</h2>
-      
-              <TarjetaContenido className="bg-white text-black rounded-xl p-6 max-h-[70vh] overflow-y-auto">
-                <h3 className="text-lg font-semibold mb-2">Letra generada:</h3>
-      
-                <div className="bg-zinc-100 text-gray-800 p-4 rounded-md shadow-inner whitespace-pre-wrap font-mono text-sm">
-                  {letraCancion}
-                </div>
-              </TarjetaContenido>
-              <div className="mt-6 flex justify-center">
-                  <Boton
-                    className="bg-purple-600 text-white rounded-full px-6 py-2"
-                    onClick={() => setUserType("alumno")}
-                  >
-                    Volver al generador
-                  </Boton>
-                </div>
-            </Tarjeta>
-          </div>
-        );
-      }      
-      return null;
+    return (
+      <div className="min-h-screen w-screen bg-gradient-to-br from-purple-200 via-purple-300 to-purple-400 flex items-center justify-center px-4">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="bg-zinc-900 w-full max-w-3xl p-8 text-white rounded-3xl shadow-2xl"
+        >
+          {/* ANIMACIÓN DEL TÍTULO */}
+          <motion.h2
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="text-3xl font-extrabold text-center mb-6"
+          >
+            🎵 Aquí está tu canción
+          </motion.h2>
+
+          {/* ANIMACIÓN DEL CONTENIDO */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4 }}
+          >
+            <div className="bg-zinc-100 text-gray-900 rounded-2xl p-6 max-h-[65vh] overflow-y-auto shadow-inner">
+              <h3 className="text-xl font-semibold mb-3">Letra generada:</h3>
+              <div className="bg-cyan-100 text-black p-4 rounded-lg shadow-inner whitespace-pre-wrap font-mono text-sm leading-relaxed">
+                {letraCancion}
+              </div>
+            </div>
+
+            <div className="mt-8 flex justify-center">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="bg-purple-600 hover:bg-purple-700 transition-colors duration-300 text-white rounded-full px-6 py-2 shadow-md"
+                onClick={() => setUserType("alumno")}
+              >
+                🔙 Volver al generador
+              </motion.button>
+            </div>
+          </motion.div>
+        </motion.div>
+      </div>
+    );
+  }
+  return null;
+
+
 }

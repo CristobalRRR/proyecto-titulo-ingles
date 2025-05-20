@@ -186,6 +186,38 @@ class GenerarLetraPDFAPIView(APIView):
                 return Response({"letra": "Error al consultar Lyrics.com"}, status=response.status_code)
         except Exception as e:
             return Response({"error": str(e)}, status=500)
+        
+
+
+
+
+'''#NICO
+SUNO_API_KEY = "key"
+
+# Función para generar música 
+def generar_audio_con_suno(prompt):
+    url = "https://apibox.erweima.ai/api/v1/generate"
+    headers = {
+        "Authorization": f"Bearer {SUNO_API_KEY}",
+        "Content-Type": "application/json"
+    }
+    data = {
+        "prompt": prompt
+       
+    }
+
+    response = requests.post(url, headers=headers, json=data)
+
+    print("SUNO raw response:", response.text) 
+
+
+    if response.status_code == 200:
+        resultado = response.json()
+        print("SUNO parsed JSON:", resultado)  
+        return resultado.get("audio_url") or resultado  
+    else:
+        raise Exception(f"Error Suno {response.status_code}: {response.text}")
+'''
 
 def GenerarPromptCancionOriginal(curso, unidad, tema, contenidos, vocabulario, pronunciacion, edad):
     prompt = (
@@ -232,8 +264,11 @@ class GenerarCancionOriginalAPIView(APIView):
                 temperature=0.8,
             )
             letra = respuesta.choices[0].message.content
+            #NICO
+            #audio_url = generar_audio_con_suno(letra)
             return Response({
                 "letra": letra,
+                #"audio_url": audio_url,             NICO
                 "parametros": {
                     "curso": curso,
                     "unidad": unidad,
