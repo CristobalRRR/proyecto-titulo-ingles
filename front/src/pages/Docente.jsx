@@ -94,7 +94,7 @@ export default function Docente({
       return(
         <div className="min-h-screen w-screen flex items-center justify-center">
         <p>
-        <img src="../public/no.jfif"></img>
+        <img src="/no.jfif" width="700px"></img>
         Sesión no autenticada, inicie sesión correctamente por favor
         <Boton className="w-full rounded-full bg-purple-500" onClick={handleLogout}>
             Regresar
@@ -140,45 +140,82 @@ export default function Docente({
                 <h2 className="text-center text-sm bg-purple-600 rounded-t-xl py-1">Top 5 canciones que te servirán</h2>
                 <TarjetaContenido className="bg-white text-black rounded-b-xl py-3">
                 <ol className="space-y-2">
-                  {canciones.map((cancion, i) => (
-                  <li key={i} className="flex justify-between items-center gap-2">
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:gap-2">
-                      <span>{cancion}</span>
-                      <a className="text-blue-600 underline text-sm"
-                      href={"https://www.youtube.com/results?search_query=" + encodeURIComponent(cancion)} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      >
-                      Link a YouTube
-                      </a>
-                    </div>
-                      <span
-                      onClick={async () => {
-                        try {
-                          const res = await axios.post("http://localhost:8000/api/generar-letra-pdf/", {
-                            cancion: cancion,
-                            parametros: parametros
-                          });
-      
-                          if (res.data && res.data.letra) {
-                            generarPDF({
-                              ...parametros,
-                              cancion: cancion.split(" - ")[0].replace(/^\d+\.\s*/, "").trim(),
-                              artista: cancion.split(" - ")[1].trim(),
-                              letra: res.data.letra
-                            });
-                          }
-                        } catch (error) {
-                          alert("Error generando PDF")
-                          console.error("Error generando PDF:", error);
-                        }
-                      }}
-                      className="bg-red-500 text-white px-2 py-1 rounded-full text-xs cursor-pointer"
-                      >
-                        PDF
-                      </span>
+                <li className="grid grid-cols-4 gap-2 font-semibold text-sm border-b pb-1 text-center">
+                  <span className="col-span-2">Canción</span>
+                  <span>YouTube</span>
+                  <span>PDFs</span>
                 </li>
-                ))}
+                   {canciones.map((cancion, i) => (
+                    <li key={i} className="grid grid-cols-4 gap-2 items-center text-sm">
+                      <span className="col-span-2">{cancion}</span>
+                
+                      <a
+                        className="text-blue-600 underline text-center hover:bg-gray-100 focus:outline-gray-500 active:bg-gray-400"
+                        href={"https://www.youtube.com/results?search_query=" + encodeURIComponent(cancion)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Ver en Youtube
+                      </a>
+                
+                      <div className="flex flex-col items-center gap-1">
+                        <span
+                          onMouseEnter="bg-blue"
+                          onClick={async () => {
+                            try {
+                              const res = await axios.post("http://localhost:8000/api/generar-letra-pdf/", {
+                                cancion: cancion,
+                                parametros: parametros
+                              });
+                
+                              if (res.data && res.data.letra) {
+                                generarPDF({
+                                  ...parametros,
+                                  cancion: cancion.split(" - ")[0].replace(/^\d+\.\s*/, "").trim(),
+                                  artista: cancion.split(" - ")[1].trim(),
+                                  letra: res.data.letra
+                                });
+                              }
+                            } catch (error) {
+                              alert("Error generando PDF");
+                              console.error("Error generando PDF:", error);
+                            }
+                          }}
+                          className="bg-red-500 text-white px-2 py-1 rounded-full text-xs cursor-pointer 
+                          transition-colors duration-100 hover:bg-blue-500 active:bg-green-500"
+                          >
+                          Informativo
+                        </span>
+                
+                        <span
+                          onClick={async () => {
+                            try {
+                              const res = await axios.post("http://localhost:8000/api/generar-letra-pdf/", {
+                                cancion: cancion,
+                                parametros: parametros
+                              });
+                
+                              if (res.data && res.data.letra) {
+                                generarPDFContenidos({
+                                  ...parametros,
+                                  cancion: cancion.split(" - ")[0].replace(/^\d+\.\s*/, "").trim(),
+                                  artista: cancion.split(" - ")[1].trim(),
+                                  letra: res.data.letra
+                                });
+                              }
+                            } catch (error) {
+                              alert("Error generando PDF");
+                              console.error("Error generando PDF:", error);
+                            }
+                          }}
+                          className="bg-red-500 text-white px-2 py-1 rounded-full text-xs cursor-pointer 
+                          transition-colors duration-100 hover:bg-blue-500 active:bg-green-500"  
+                        >
+                          Contenidos
+                        </span>
+                      </div>
+                    </li>
+                  ))}
               </ol>
                 <Boton className="w-full mt-4 bg-purple-500 rounded-full" onClick={() => setUserType("docente")}>Regresar</Boton>
                 </TarjetaContenido>
