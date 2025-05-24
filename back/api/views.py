@@ -68,7 +68,8 @@ class GenerarRecomendacionAPIView(APIView):
         )
         
         try:
-            '''respuestaDeepSeek = clientDeepSeek.chat.completions.create(
+            #Solicitud a DeepSeek
+            respuestaDeepSeek = clientDeepSeek.chat.completions.create(
                 model="deepseek-chat",
                 messages=[
                     {"role": "system", "content": "Eres un experto en docencia de inglés usando música.\n"},
@@ -77,8 +78,8 @@ class GenerarRecomendacionAPIView(APIView):
                 max_tokens=500,
                 temperature=0.7,
             )
-            cancionesDeepSeek = respuestaDeepSeek.choices[0].message.content'''
-        
+            cancionesDeepSeek = respuestaDeepSeek.choices[0].message.content
+            print("Canciones DeepSeek:\n",cancionesDeepSeek)
             #Solicitud a OpenAI
             respuestaOpenai = clientOpenAI.chat.completions.create(
                 model="gpt-3.5-turbo",
@@ -90,8 +91,7 @@ class GenerarRecomendacionAPIView(APIView):
                 temperature=0.7
                 )
             cancionesOpenai = respuestaOpenai.choices[0].message.content
-            print("Canciones openai:\n",cancionesOpenai)
-
+            print("Canciones OpenAI:\n",cancionesOpenai)
             #Solicitud a Gemini AI
             respuestaGemini = clientGemini.models.generate_content(
                 model="gemini-2.0-flash",
@@ -104,7 +104,7 @@ class GenerarRecomendacionAPIView(APIView):
             cancionesGemini = respuestaGemini.text
             print("Canciones gemini:\n",cancionesGemini)
             #Megazord
-            todasLasRespuestas= f"{cancionesOpenai}\n{cancionesGemini}"
+            todasLasRespuestas= f"{cancionesDeepSeek}\n{cancionesOpenai}\n{cancionesGemini}"
             promptFinal = (
                 "A partir de las siguientes listas de canciones proporcionadas por diferentes modelos de IA, "
                 "identifica las 5 canciones más recomendadas o que más se repiten.\n"
@@ -142,7 +142,7 @@ class GenerarRecomendacionAPIView(APIView):
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-class GenerarLetraPDFAPIView(APIView):
+'''class GenerarLetraPDFAPIView(APIView):
     def post(self, request):
         cancion_completa = request.data.get("cancion")
         parametros = request.data.get("parametros")
@@ -170,7 +170,6 @@ class GenerarLetraPDFAPIView(APIView):
 
         headers ={
             "User-Agent": "Mozilla/5.0"
-
         }
 
         try:
@@ -185,9 +184,45 @@ class GenerarLetraPDFAPIView(APIView):
             else:
                 return Response({"letra": "Error al consultar Lyrics.com"}, status=response.status_code)
         except Exception as e:
-            return Response({"error": str(e)}, status=500)
+            return Response({"error": str(e)}, status=500)'''
         
+class GenerarLetraPDFAPIView(APIView):
+    def post(self, request):
+        cancion_completa = request.data.get("cancion")
+        parametros = request.data.get("parametros")
 
+        if not cancion_completa or not parametros:
+            return Response({"error": "Datos incompletos"}, status=400)
+
+        partes = cancion_completa.split(" - ")
+        if len(partes) < 2:
+            return Response({"error": "Formato de canción inválido"}, status=400)
+        
+        a = partes[1].strip()
+        n = partes[0].split(". ")[1].strip() if ". " in partes[0] else partes[0].strip()
+
+        artista = a.replace('"', '')
+        nombre_cancion = n.replace('"', '')
+
+        prompt = (
+            f"Proporcióname la letra de la canción {nombre_cancion} de {artista} formateada por versos, completa.\n"
+            "No incluyas comentarios ni encabezados, solo la letra completa sin cortes."
+                )
+
+        try:
+            respuestaDeepSeek = clientDeepSeek.chat.completions.create(
+                model="deepseek-chat",
+                messages=[
+                    {"role": "system", "content": "Eres un experto en docencia de inglés usando música.\n"},
+                    {"role": "user", "content": prompt},
+                    ],
+                max_tokens=1000,
+                temperature=0.7,
+            )
+            letraDeepSeek = respuestaDeepSeek.choices[0].message.content
+            return Response({"letra": letraDeepSeek})
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 
