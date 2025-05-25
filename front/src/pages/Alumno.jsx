@@ -28,6 +28,9 @@ export default function Alumno({
     const [pronunciacion, setPronunciacion] = useState("");
     const [vocabulario, setVocabulario] = useState("");
 
+    const [textoBoton, setTextoBoton] = useState("Generar canción");
+    const [isLoading, setIsLoading] = useState(false);
+
     useEffect(() => {
         const datosCurso = contenidos[cursoSeleccionado];
         const datosUnidad = datosCurso?.unidades?.[unidadSeleccionada];
@@ -46,13 +49,18 @@ export default function Alumno({
         }
       }, [cursoSeleccionado, unidadSeleccionada]);
 
-    const generarCancionOriginal = async () => {    
+    const generarCancionOriginal = async () => {
+        if (!cursos.includes(cursoSeleccionado) || !unidades.includes(unidadSeleccionada)) {
+        alert("Curso o unidad no válidos");
+        return;
+        }
+        setTextoBoton("Generando...");
+        setIsLoading(true);
         try {
           const response = await axios.post("http://localhost:8000/api/generar-cancion-original/", {
             curso: cursoSeleccionado,
             unidad: unidadSeleccionada,
           });
-      
           if (response.data && response.data.letra) {
             setUserType("cancion")
             setLetraCancion(response.data.letra);
@@ -62,6 +70,10 @@ export default function Alumno({
         } catch (error) {
           console.error("Error al generar canción:", error);
           alert("Ocurrió un error.");
+        }
+        finally{
+          setIsLoading(false);
+          setTextoBoton("Generar canción");
         }
       };
     if(userType === "alumno"){
@@ -83,7 +95,7 @@ export default function Alumno({
         />
         <Select label="Tema" value={tema || "Selecciona curso y unidad"} disabled />
         <Boton className="w-full bg-purple-600" onClick={generarCancionOriginal}>
-          Generar canción
+          {textoBoton}
         </Boton>
         <Boton className="w-full mt-4 bg-purple-500 rounded-full" onClick={() => navigate("/")}>Regresar</Boton>
       </Tarjeta>

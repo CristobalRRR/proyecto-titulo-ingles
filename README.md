@@ -17,6 +17,7 @@
 <p>Instalar dependencias:</p>
 <pre><code>npm install
 npm install axios
+npm install -D tailwindcss postcss autoprefixer
 npm install jspdf
 npm install firebase
 npm install framer-motion </code></pre>

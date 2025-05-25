@@ -75,8 +75,8 @@ class GenerarRecomendacionAPIView(APIView):
                     {"role": "system", "content": "Eres un experto en docencia de inglés usando música.\n"},
                     {"role": "user", "content": prompt},
                     ],
-                max_tokens=500,
-                temperature=0.7,
+                max_tokens=400,
+                temperature=0.6,
             )
             cancionesDeepSeek = respuestaDeepSeek.choices[0].message.content
             print("Canciones DeepSeek:\n",cancionesDeepSeek)
@@ -87,8 +87,8 @@ class GenerarRecomendacionAPIView(APIView):
                         {"role": "system", "content": "Eres un experto en docencia de inglés usando música.\n"},
                         {"role": "user", "content": prompt}
                     ],
-                max_tokens=500,
-                temperature=0.7
+                max_tokens=400,
+                temperature=0.6
                 )
             cancionesOpenai = respuestaOpenai.choices[0].message.content
             print("Canciones OpenAI:\n",cancionesOpenai)
@@ -109,7 +109,7 @@ class GenerarRecomendacionAPIView(APIView):
                 "A partir de las siguientes listas de canciones proporcionadas por diferentes modelos de IA, "
                 "identifica las 5 canciones más recomendadas o que más se repiten.\n"
                 "En caso de que no se repitan, elige las que sean más populares, basandote en películas por ejemplo\n"
-                "Devuelve el resultado en formato de lista sin texto adicional, así: "
+                "Devuelve el resultado en formato de lista sin texto adicional de ningun tipo respetando el siguiente formato: "
                 "[N° Canción]. [Nombre de la canción] - [Nombre del artista]\n"
                 f"{todasLasRespuestas}"
             )
@@ -142,50 +142,6 @@ class GenerarRecomendacionAPIView(APIView):
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-'''class GenerarLetraPDFAPIView(APIView):
-    def post(self, request):
-        cancion_completa = request.data.get("cancion")
-        parametros = request.data.get("parametros")
-
-        if not cancion_completa or not parametros:
-            return Response({"error": "Datos incompletos"}, status=400)
-
-        partes = cancion_completa.split(" - ")
-        if len(partes) < 2:
-            return Response({"error": "Formato de canción inválido"}, status=400)
-        
-        a = partes[1].strip()
-        n = partes[0].split(". ")[1].strip() if ". " in partes[0] else partes[0].strip()
-
-        artista = a.replace('"', '')
-        nombre_cancion = n.replace('"', '')
-        url = "https://www.stands4.com/services/v2/lyrics.php"
-        params = {
-            "uid": idLyricsAPI,
-            "tokenid": tokenLyricsAPI,
-            "term": nombre_cancion,
-            "artist": artista,
-            "format": "json"
-        }
-
-        headers ={
-            "User-Agent": "Mozilla/5.0"
-        }
-
-        try:
-            response = requests.get(url, params=params, headers=headers)
-            if response.status_code == 200:
-                data = response.json()
-                results = data.get("result", [])
-                if not results:
-                    return Response({"letra": "No se encontró la letra"}, status=404)
-                song_link = results[0].get("song-link")
-                return Response({"letra": song_link})
-            else:
-                return Response({"letra": "Error al consultar Lyrics.com"}, status=response.status_code)
-        except Exception as e:
-            return Response({"error": str(e)}, status=500)'''
-        
 class GenerarLetraPDFAPIView(APIView):
     def post(self, request):
         cancion_completa = request.data.get("cancion")
@@ -216,15 +172,52 @@ class GenerarLetraPDFAPIView(APIView):
                     {"role": "system", "content": "Eres un experto en docencia de inglés usando música.\n"},
                     {"role": "user", "content": prompt},
                     ],
-                max_tokens=1000,
-                temperature=0.7,
+                max_tokens=400,
+                temperature=0.6,
             )
             letraDeepSeek = respuestaDeepSeek.choices[0].message.content
             return Response({"letra": letraDeepSeek})
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+class GenerarLetraPDFContenidosAPIView(APIView):
+    def post(self, request):
+        cancion_completa = request.data.get("cancion")
+        parametros = request.data.get("parametros")
+        print("Parametros: ",parametros)
 
+        if not cancion_completa or not parametros:
+            return Response({"error": "Datos incompletos"}, status=400)
+
+        partes = cancion_completa.split(" - ")
+        if len(partes) < 2:
+            return Response({"error": "Formato de canción inválido"}, status=400)
+        
+        a = partes[1].strip()
+        n = partes[0].split(". ")[1].strip() if ". " in partes[0] else partes[0].strip()
+
+        artista = a.replace('"', '')
+        nombre_cancion = n.replace('"', '')
+
+        prompt = (
+            f"Proporcióname la letra de la canción {nombre_cancion} de {artista} formateada por versos, completa.\n"
+            f"Utiliza los parametros para resaltar el vocabulario y palabras clave acordes a los contenidos {parametros}."
+                )
+
+        try:
+            respuestaDeepSeek = clientDeepSeek.chat.completions.create(
+                model="deepseek-chat",
+                messages=[
+                    {"role": "system", "content": "Eres un experto en docencia de inglés usando música.\n"},
+                    {"role": "user", "content": prompt},
+                    ],
+                max_tokens=400,
+                temperature=0.6,
+            )
+            letraDeepSeek = respuestaDeepSeek.choices[0].message.content
+            return Response({"letra": letraDeepSeek})
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 '''#NICO
 SUNO_API_KEY = "key"

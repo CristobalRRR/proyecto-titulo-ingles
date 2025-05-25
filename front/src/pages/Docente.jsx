@@ -4,7 +4,7 @@ import { Select } from "../components/select";
 import { Boton } from "../components/boton";
 import { Tarjeta, TarjetaContenido } from "../components/tarjeta";
 import contenidos from "../data/contenidos.json";
-import { generarPDF } from "../utils/pdf.js";
+import { generarPDF, generarPDFContenidos } from "../utils/pdf.js";
 import { doSignOut } from "../firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/authContext/index.jsx";
@@ -33,6 +33,9 @@ export default function Docente({
     const [pronunciacion, setPronunciacion] = useState("");
     const [vocabulario, setVocabulario] = useState("");
 
+    const [textoBoton, setTextoBoton] = useState("Recomendar");
+    const [isLoading, setIsLoading] = useState(false);
+
     useEffect(() => {
       const datosCurso = contenidos[cursoSeleccionado];
       const datosUnidad = datosCurso?.unidades?.[unidadSeleccionada];
@@ -56,8 +59,11 @@ export default function Docente({
           alert("Curso o unidad no válidos");
           return;
         }
-    
+        setTextoBoton("Generando...");
+        setIsLoading(true);
+        
         try {
+
           const response = await axios.post("http://localhost:8000/api/generar-recomendacion/", {
             curso: cursoSeleccionado,
             unidad: unidadSeleccionada
@@ -66,7 +72,7 @@ export default function Docente({
           const listaCanciones = response.data.canciones
             .split("\n")
             .filter((c) => c.trim() !== "");
-    
+
           setCanciones(listaCanciones);
           setParametros({
             curso: cursoSeleccionado,
@@ -82,6 +88,10 @@ export default function Docente({
         } catch (error) {
           alert("Error generando recomendaciones");
           console.error("Error generando recomendaciones:", error);
+        }
+        finally{
+          setIsLoading(false);
+          setTextoBoton("Recomendar");
         }
       };
 
@@ -122,7 +132,7 @@ export default function Docente({
             className="w-full rounded-full bg-purple-500"
             onClick={generarRecomendaciones}
           >
-            Recomendar
+            {textoBoton}
           </Boton>
           <Boton className="w-full rounded-full bg-purple-500" onClick={handleLogout}>
             Cerrar sesión
@@ -190,7 +200,7 @@ export default function Docente({
                         <span
                           onClick={async () => {
                             try {
-                              const res = await axios.post("http://localhost:8000/api/generar-letra-pdf/", {
+                              const res = await axios.post("http://localhost:8000/api/generar-letra-pdf-contenidos/", {
                                 cancion: cancion,
                                 parametros: parametros
                               });
