@@ -1,3 +1,5 @@
+import { motion } from "framer-motion";
+
 export function Boton({ children, className = "", onClick, variant = "default", active = false }) {
   const base = "px-4 py-2 text-white font-semibold";
   const styles = {
@@ -19,12 +21,13 @@ export function Boton({ children, className = "", onClick, variant = "default", 
 
 
   return (
-    <button
+    <motion.button
+    whileHover={{ scale: 1.05 }}
+    whileTap={{ scale: 0.95 }}
       onClick={onClick}
       className={`${base} ${variantClass} ${className}`}
-      style={rainbowAnimation}
     >
       {children}
-    </button>
+    </motion.button>
   );
 }
