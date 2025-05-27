@@ -34,6 +34,9 @@ export default function Docente({
     const [vocabulario, setVocabulario] = useState("");
 
     const [textoBoton, setTextoBoton] = useState("Recomendar");
+    const [generandoPDFIndex, setGenerandoPDFIndex] = useState(null);
+
+
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
@@ -54,6 +57,7 @@ export default function Docente({
       }
     }, [cursoSeleccionado, unidadSeleccionada]);
 
+    //Recomendaciones
     const generarRecomendaciones = async () => {
         if (!cursos.includes(cursoSeleccionado) || !unidades.includes(unidadSeleccionada)) {
           alert("Curso o unidad no válidos");
@@ -61,18 +65,14 @@ export default function Docente({
         }
         setTextoBoton("Generando...");
         setIsLoading(true);
-        
         try {
-
           const response = await axios.post("http://localhost:8000/api/generar-recomendacion/", {
             curso: cursoSeleccionado,
             unidad: unidadSeleccionada
           });
-    
           const listaCanciones = response.data.canciones
             .split("\n")
             .filter((c) => c.trim() !== "");
-
           setCanciones(listaCanciones);
           setParametros({
             curso: cursoSeleccionado,
@@ -83,7 +83,6 @@ export default function Docente({
             pronunciacion,
             vocabulario
           });
-    
           setUserType("recomendaciones");
         } catch (error) {
           alert("Error generando recomendaciones");
@@ -95,11 +94,14 @@ export default function Docente({
         }
       };
 
-      const handleLogout = async () => {
-        await doSignOut();
-        navigate("/");
-      };
-    
+
+    //Cerrar sesión
+    const handleLogout = async () => {
+      await doSignOut();
+      navigate("/");
+    };
+
+    //Visualización
     if (!currentUser){
       return(
         <div className="min-h-screen w-screen flex items-center justify-center">
@@ -170,14 +172,14 @@ export default function Docente({
                 
                       <div className="flex flex-col items-center gap-1">
                         <span
-                          onMouseEnter="bg-blue"
                           onClick={async () => {
+                            setGenerandoPDFIndex(i);
                             try {
                               const res = await axios.post("http://localhost:8000/api/generar-letra-pdf/", {
                                 cancion: cancion,
                                 parametros: parametros
                               });
-                
+                    
                               if (res.data && res.data.letra) {
                                 generarPDF({
                                   ...parametros,
@@ -189,22 +191,24 @@ export default function Docente({
                             } catch (error) {
                               alert("Error generando PDF");
                               console.error("Error generando PDF:", error);
+                            } finally {
+                              setGenerandoPDFIndex(null);
                             }
                           }}
                           className="bg-red-500 text-white px-2 py-1 rounded-full text-xs cursor-pointer 
                           transition-colors duration-100 hover:bg-blue-500 active:bg-green-500"
                           >
-                          Informativo
+                          {generandoPDFIndex === i ? "Generando, por favor espere..." : "Informativo"}
                         </span>
                 
                         <span
                           onClick={async () => {
+                            setGenerandoPDFIndex(i);
                             try {
                               const res = await axios.post("http://localhost:8000/api/generar-letra-pdf-contenidos/", {
                                 cancion: cancion,
                                 parametros: parametros
-                              });
-                
+                              })
                               if (res.data && res.data.letra) {
                                 generarPDFContenidos({
                                   ...parametros,
@@ -216,18 +220,24 @@ export default function Docente({
                             } catch (error) {
                               alert("Error generando PDF");
                               console.error("Error generando PDF:", error);
+                            } finally {
+                              setGenerandoPDFIndex(null);
                             }
                           }}
                           className="bg-red-500 text-white px-2 py-1 rounded-full text-xs cursor-pointer 
                           transition-colors duration-100 hover:bg-blue-500 active:bg-green-500"  
                         >
-                          Contenidos
+                        {generandoPDFIndex === i ? "Generando, por favor espere..." : "Contenidos"}
+
                         </span>
                       </div>
                     </li>
                   ))}
               </ol>
-                <Boton className="w-full mt-4 bg-purple-500 rounded-full" onClick={() => setUserType("docente")}>Regresar</Boton>
+                <Boton className="w-full mt-4 bg-purple-500 rounded-full"
+                onClick={() => setUserType("docente")}
+                  >
+                    Regresar</Boton>
                 </TarjetaContenido>
               </Tarjeta>
             </div>

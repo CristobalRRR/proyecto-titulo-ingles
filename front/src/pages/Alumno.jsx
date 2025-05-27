@@ -6,6 +6,7 @@ import { Tarjeta, TarjetaContenido } from "../components/tarjeta";
 import contenidos from "../data/contenidos.json";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { generarPDFAlumno } from "../utils/pdf";
 
 const cursos = ["1° Básico", "2° Básico", "3° Básico", "4° Básico", "5° Básico",
     "6° Básico", "7° Básico", "8° Básico", "1° Medio", "2° Medio", "3° Medio", "4° Medio"];
@@ -28,7 +29,8 @@ export default function Alumno({
     const [pronunciacion, setPronunciacion] = useState("");
     const [vocabulario, setVocabulario] = useState("");
 
-    const [textoBoton, setTextoBoton] = useState("Generar canción");
+    const [textoBotonCancion, setTextoBotonCancion] = useState("Generar canción");
+    const [textoBotonContenidos, setTextoBotonContenidos] = useState("Obtener contenidos");
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
@@ -54,7 +56,7 @@ export default function Alumno({
         alert("Curso o unidad no válidos");
         return;
         }
-        setTextoBoton("Generando...");
+        setTextoBotonCancion("Generando...");
         setIsLoading(true);
         try {
           const response = await axios.post("http://localhost:8000/api/generar-cancion-original/", {
@@ -73,9 +75,10 @@ export default function Alumno({
         }
         finally{
           setIsLoading(false);
-          setTextoBoton("Generar canción");
+          setTextoBotonCancion("Generar canción");
         }
       };
+
     if(userType === "alumno"){
     return (
       <div className="min-h-screen w-screen bg-purple-300 flex items-center justify-center">
@@ -95,8 +98,55 @@ export default function Alumno({
         />
         <Select label="Tema" value={tema || "Selecciona curso y unidad"} disabled />
         <Boton className="w-full bg-purple-600" onClick={generarCancionOriginal}>
-          {textoBoton}
+          {textoBotonCancion}
         </Boton>
+        <Boton
+        className="w-full mt-4 bg-purple-500 rounded-full"
+        onClick={async () => {
+          try {
+            if (!cursos.includes(cursoSeleccionado) || !unidades.includes(unidadSeleccionada)) {
+              alert("Curso o unidad no válidos");
+              return;
+            }
+            const datosCurso = contenidos[cursoSeleccionado];
+            const datosUnidad = datosCurso?.unidades?.[unidadSeleccionada];
+            const parametros = {
+              unidad: unidadSeleccionada,
+              curso: cursoSeleccionado,
+              tema: datosUnidad.tema,
+              contenidos: datosUnidad.contenidos,
+              palabras_clave: datosUnidad.palabras_clave,
+              pronunciacion: datosUnidad.pronunciacion,
+              vocabulario: datosUnidad.vocabulario
+            };
+
+            const res = await axios.post("http://localhost:8000/api/generar-letra-pdf-alumno/", {
+              curso: cursoSeleccionado,
+              unidad: unidadSeleccionada
+            });
+
+            if (res.data && res.data.letra && res.data.cancion) {
+              const partes = res.data.cancion.split(" - ");
+              const cancionNombre = partes[0].replace(/^\d+\.\s*/, "").trim();
+              const artista = partes[1]?.trim() || "";
+
+              generarPDFAlumno({
+                ...parametros,
+                cancion: cancionNombre,
+                artista: artista,
+                letra: res.data.letra
+              });
+            } else {
+              alert("No se pudo generar la letra o el nombre de la canción.");
+            }
+          } catch (error) {
+            alert("Error generando PDF");
+            console.error("Error generando PDF:", error);
+          }
+        }}
+            >
+            Obtener contenidos
+            </Boton>
         <Boton className="w-full mt-4 bg-purple-500 rounded-full" onClick={() => navigate("/")}>Regresar</Boton>
       </Tarjeta>
     </div>
