@@ -93,7 +93,7 @@ class GenerarRecomendacionAPIView(APIView):
             print("Canciones DeepSeek:\n",cancionesDeepSeek)
             #Solicitud a OpenAI
             respuestaOpenai = clientOpenAI.chat.completions.create(
-                model="gpt-3.5-turbo",
+                model="gpt-4.1-mini",
                 messages=[
                         {"role": "system", "content": "Eres un experto en docencia de inglés usando música.\n"},
                         {"role": "user", "content": prompt}
@@ -126,7 +126,7 @@ class GenerarRecomendacionAPIView(APIView):
             )
             
             respuestaFinal = clientOpenAI.chat.completions.create(
-                model="gpt-3.5-turbo",
+                model="gpt-4.1-mini",
                 messages=[
                         {"role": "system", "content": "Actúa como un experto en docencia de inglés usando música.\n"},
                         {"role": "user", "content": promptFinal}
@@ -197,7 +197,7 @@ class GenerarContenidosAlumnoAPIView(APIView):
 
         try:
             respuestaOpenai = clientOpenAI.chat.completions.create(
-                model="gpt-3.5-turbo",
+                model="gpt-4.1-mini",
                 messages=[
                         {"role": "system", "content": "Eres un experto en docencia de inglés usando música.\n"},
                         {"role": "user", "content": prompt}
@@ -239,7 +239,7 @@ class GenerarContenidosAlumnoAPIView(APIView):
                 f"Letra:\n{letra}"
             )
             letra_resaltada_response = clientOpenAI.chat.completions.create(
-                model="gpt-4",
+                model="gpt-4.1-mini",
                 messages=[
                     {"role": "system", "content": "Eres un asistente educativo que destaca vocabulario en letras de canciones para enseñar inglés."},
                     {"role": "user", "content": prompt_gpt},
@@ -346,7 +346,7 @@ class GenerarLetraPDFContenidosAPIView(APIView):
             )
 
             respuestaGPT = clientOpenAI.chat.completions.create(
-                model="gpt-4",
+                model="gpt-4.1-mini",
                 messages=[
                     {"role": "system", "content": "Eres un asistente educativo que destaca vocabulario en letras de canciones para la enseñanza del inglés."},
                     {"role": "user", "content": prompt_gpt},
@@ -400,7 +400,7 @@ class GenerarCancionOriginalAPIView(APIView):
 
         try:
             respuesta = clientOpenAI.chat.completions.create(
-                model="gpt-3.5-turbo",
+                model="gpt-4.1-mini",
                 messages=[
                     {"role": "system", "content": "Eres un compositor de canciones educativas en inglés para niños."},
                     {"role": "user", "content": prompt}
