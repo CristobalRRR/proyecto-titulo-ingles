@@ -184,7 +184,6 @@ class GenerarLetraPDFContenidosAPIView(APIView):
     def post(self, request):
         cancion_completa = request.data.get("cancion")
         parametros = request.data.get("parametros")
-        print("Parametros: ",parametros)
 
         if not cancion_completa or not parametros:
             return Response({"error": "Datos incompletos"}, status=400)
@@ -200,24 +199,52 @@ class GenerarLetraPDFContenidosAPIView(APIView):
         nombre_cancion = n.replace('"', '')
 
         prompt = (
-            f"Proporcióname la letra de la canción {nombre_cancion} de {artista} formateada por versos, completa.\n"
-            f"Utiliza los parametros para resaltar el vocabulario y palabras clave acordes a los contenidos {parametros}."
-                )
+            f"Proporcióname la letra completa de la canción '{nombre_cancion} de {artista}' formateada por versos.\n"
+            "Asegurate que sea de verdad la letra completa, comenzando desde el principio absoluto de la cancion y omitir el final solo en el caso "
+            "de que falten tokens si la letra es muy larga.\n"
+            "No incluyas comentarios ni encabezados, solo la letra completa sin cortes."
+        )
 
         try:
+            # Paso 1: Obtener letra de DeepSeek
             respuestaDeepSeek = clientDeepSeek.chat.completions.create(
                 model="deepseek-chat",
                 messages=[
                     {"role": "system", "content": "Eres un experto en docencia de inglés usando música.\n"},
                     {"role": "user", "content": prompt},
-                    ],
-                max_tokens=400,
+                ],
+                max_tokens=600,
                 temperature=0.6,
             )
             letraDeepSeek = respuestaDeepSeek.choices[0].message.content
-            return Response({"letra": letraDeepSeek})
+
+            # Paso 2: Pasar letra a GPT para resaltar contenidos
+            prompt_gpt = (
+                f"Actúa como un experto en enseñanza de inglés y en el karaoke.\n"
+                f"Dada la siguiente letra de una canción, resalta las palabras o frases clave relacionadas con estos contenidos: {parametros}.\n"
+                "Usa doble asterisco (**palabra**) para resaltar cada palabra relevante dentro del texto.\n"
+                "Despues del verso escribe la palabra clave y el motivo corto de por que es relevante para el aprendizaje"
+                f"Letra:\n{letraDeepSeek}"
+            )
+
+            respuestaGPT = clientOpenAI.chat.completions.create(
+                model="gpt-4",
+                messages=[
+                    {"role": "system", "content": "Eres un asistente educativo que destaca vocabulario en letras de canciones para la enseñanza del inglés."},
+                    {"role": "user", "content": prompt_gpt},
+                ],
+                max_tokens=1000,
+                temperature=0.7,
+            )
+            letraResaltada = respuestaGPT.choices[0].message.content
+
+            return Response({
+                "letra": letraResaltada
+            })
+
         except Exception as e:
-            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({"error": str(e)}, status=500)
+
 
 '''#NICO
 SUNO_API_KEY = "key"

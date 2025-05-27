@@ -109,7 +109,7 @@ export const generarPDFContenidos = ({
   vocabulario, 
   cancion, 
   artista, 
-  letra 
+  letra, 
 }) => {
   const doc = new jsPDF();
   const margen = 15;
@@ -119,32 +119,28 @@ export const generarPDFContenidos = ({
   doc.setFont("helvetica");
   doc.setFontSize(12);
 
+  const textWidth = doc.internal.pageSize.width - margen * 2;
+
   // Función mejorada para agregar texto con formato
   const agregarSeccion = (label, valor, isBoldLabel = true, isMultiLine = true) => {
-    // Label en negrita
     if (isBoldLabel) {
       doc.setFont("helvetica", "bold");
     } else {
       doc.setFont("helvetica", "normal");
     }
-    
+  
     doc.text(`${label}:`, margen, y);
-    
-    // Valor en normal
     doc.setFont("helvetica", "normal");
     
     if (isMultiLine) {
-      const textWidth = doc.internal.pageSize.width - margen * 2 - 40;
-      const textLines = doc.splitTextToSize(valor.toString(), textWidth);
+      const textLines = doc.splitTextToSize(valor.toString(), textWidth - 40); // limit width for values
       doc.text(textLines, margen + 40, y);
-      y += textLines.length * 6; // línea más compacta
+      y += textLines.length * 6;
     } else {
       doc.text(valor.toString(), margen + 40, y);
       y += 7;
     }
-
-    
-    // Espacio entre secciones
+  
     y += 5;
   };
 
@@ -174,23 +170,16 @@ export const generarPDFContenidos = ({
 
   // Procesar la letra manteniendo los párrafos originales
   const parrafos = letra.split('\n').filter(p => p.trim() !== '');
-
   for (let p of parrafos) {
-    const lines = doc.splitTextToSize(p.trim(), 280);
-    
-    // Verificar si necesitamos nueva página
+    const lines = doc.splitTextToSize(p.trim(), textWidth);
     if (y + (lines.length * lineHeight) > limitePagina) {
       doc.addPage();
       y = margen;
     }
-    
-    // Agregar cada línea del párrafo
-    for (let line of lines) {
+    lines.forEach(line => {
       doc.text(line, margen, y);
       y += lineHeight;
-    }
-    
-    // Espacio entre párrafos
+    });
     y += paragraphSpacing - lineHeight;
   }
 
