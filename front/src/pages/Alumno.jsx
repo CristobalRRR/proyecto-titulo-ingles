@@ -119,17 +119,16 @@ export default function Alumno({
               pronunciacion: datosUnidad.pronunciacion,
               vocabulario: datosUnidad.vocabulario
             };
-
+            setTextoBotonContenidos("Obteniendo, esto puede tardar un minuto o dos...");
+            
             const res = await axios.post("http://localhost:8000/api/generar-letra-pdf-alumno/", {
               curso: cursoSeleccionado,
               unidad: unidadSeleccionada
             });
-
             if (res.data && res.data.letra && res.data.cancion) {
               const partes = res.data.cancion.split(" - ");
               const cancionNombre = partes[0].replace(/^\d+\.\s*/, "").trim();
               const artista = partes[1]?.trim() || "";
-
               generarPDFAlumno({
                 ...parametros,
                 cancion: cancionNombre,
@@ -137,15 +136,17 @@ export default function Alumno({
                 letra: res.data.letra
               });
             } else {
-              alert("No se pudo generar la letra o el nombre de la canción.");
+              alert("No se pudo generar.");
             }
           } catch (error) {
             alert("Error generando PDF");
             console.error("Error generando PDF:", error);
+          } finally {
+            setTextoBotonContenidos("Obtener contenidos");
           }
         }}
             >
-            Obtener contenidos
+            {textoBotonContenidos}
             </Boton>
         <Boton className="w-full mt-4 bg-purple-500 rounded-full" onClick={() => navigate("/")}>Regresar</Boton>
       </Tarjeta>
