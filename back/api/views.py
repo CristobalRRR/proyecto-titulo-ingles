@@ -336,14 +336,21 @@ class GenerarLetraPDFContenidosAPIView(APIView):
             )
             letraDeepSeek = respuestaDeepSeek.choices[0].message.content
 
-            # Paso 2: Pasar letra a GPT para resaltar contenidos
+            # Paso 2: Pasar letra a GPT para resaltarscontenidos
             prompt_gpt = (
-                f"Actúa como un experto en enseñanza de inglés y en el karaoke.\n"
-                f"Dada la siguiente letra de una canción, resalta las palabras o frases clave relacionadas con estos contenidos: {parametros}.\n"
-                "Usa doble asterisco (**palabra**) para resaltar cada palabra relevante dentro del texto.\n"
-                "Despues del verso escribe la palabra clave y el motivo corto de por que es relevante para el aprendizaje"
+                f"Actúa como un experto en enseñanza de inglés y en karaoke.\n"
+                f"Recibirás la letra de una canción y una lista de contenidos de aprendizaje en inglés: {parametros}.\n"
+                "Tu tarea es:\n"
+                "1. Identificar palabras o frases dentro de la letra que sean relevantes para los contenidos dados. Esto puede incluir vocabulario clave, estructuras gramaticales, expresiones idiomáticas, aspectos de pronunciación, entre otros.\n"
+                "2. Marcar estas palabras o frases dentro de la letra con doble asterisco (**palabra**) para resaltarlas.\n"
+                "3. Antes de mostrar la letra, escribe una lista de las palabras/frases resaltadas junto con una breve explicación de por qué cada una es relevante para el aprendizaje de inglés y cómo se relaciona con los contenidos mencionados.\n"
+                "IMPORTANTE:\n"
+                "- Usa el formato **palabra** SOLO dentro de la letra.\n"
+                "- La explicación y la letra deben estar claramente separadas. Primero va la explicación de contenidos, luego la letra resaltada.\n"
+                "- Sé claro, conciso y pedagógico en tus explicaciones.\n"
                 f"Letra:\n{letraDeepSeek}"
             )
+
 
             respuestaGPT = clientOpenAI.chat.completions.create(
                 model="gpt-4.1-mini",
@@ -369,7 +376,7 @@ def GenerarPromptCancionOriginal(curso, unidad, tema, contenidos, vocabulario, p
         f"Eres un compositor de canciones infantiles educativas. Crea una canción original en inglés para estudiantes de {edad} años del curso {curso}. "
         f"La canción debe estar basada en la unidad '{unidad}' llamada '{tema}'. Los contenidos a enseñar son: {contenidos}. "
         f"Incluye este vocabulario: {vocabulario}. Refuerza la pronunciación de la letra '{pronunciacion}' en las palabras. "
-        f"Debe ser alegre, fácil de cantar, y adecuada para niños, sin lenguaje ofensivo ni nombres propios. "
+        f"Debe ser alegre, fácil de cantar, y adecuada para niños de la edad '{edad}', sin lenguaje ofensivo ni nombres propios. "
         f"Devuelve solo la letra en formato verso a verso, sin explicaciones ni encabezados."
     )
     return prompt

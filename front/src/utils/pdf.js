@@ -167,6 +167,7 @@ export const generarPDFContenidos = ({
   const lineHeight = 6;
   const paragraphSpacing = 8;
 
+  
   const parrafos = letra.split('\n').filter(p => p.trim() !== '');
   for (let p of parrafos) {
     const lines = doc.splitTextToSize(p.trim(), textWidth);
@@ -174,10 +175,30 @@ export const generarPDFContenidos = ({
       doc.addPage();
       y = margen;
     }
+
+    //Aqui es donde se aplica la negrita en las palabras claves
     lines.forEach(line => {
-      doc.text(line, margen, y);
+      let x = margen;
+      const parts = line.split(/(\*\*[^\*]+\*\*)/); // divide por texto en **negrita**
+      parts.forEach(part => {
+        if (part.startsWith("**") && part.endsWith("**")) {
+          const boldText = part.slice(2, -2); // remueve los **
+          doc.setFont("helvetica", "bold");
+          doc.text(boldText, x, y, { baseline: 'top' });
+          const textWidth = doc.getTextWidth(boldText);
+          x += textWidth;
+        } else {
+          doc.setFont("helvetica", "normal");
+          doc.text(part, x, y, { baseline: 'top' });
+          const textWidth = doc.getTextWidth(part);
+          x += textWidth;
+        }
+      });
+      //Hasta aqui
+      
       y += lineHeight;
     });
+    
     y += paragraphSpacing - lineHeight;
   }
 
