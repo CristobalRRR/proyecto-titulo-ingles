@@ -52,12 +52,14 @@ export default function Alumno({
       }, [cursoSeleccionado, unidadSeleccionada]);
 
     const generarCancionOriginal = async () => {
+
         if (!cursos.includes(cursoSeleccionado) || !unidades.includes(unidadSeleccionada)) {
         alert("Curso o unidad no válidos");
         return;
         }
-        setTextoBotonCancion("Generando...");
+        if (isLoading) return;
         setIsLoading(true);
+        setTextoBotonCancion("Generando...");
         try {
           const response = await axios.post("http://localhost:8000/api/generar-cancion-original/", {
             curso: cursoSeleccionado,
@@ -97,13 +99,17 @@ export default function Alumno({
           onChange={(e) => setUnidadSeleccionada(e.target.value)}
         />
         <Select label="Tema" value={tema || "Selecciona curso y unidad"} disabled />
-        <Boton className="w-full bg-purple-600" onClick={generarCancionOriginal}>
+        <Boton className="w-full bg-purple-600" onClick={generarCancionOriginal} 
+        disabled={isLoading}
+        >
           {textoBotonCancion}
         </Boton>
         <Boton
         className="w-full mt-4 bg-purple-500 rounded-full"
         onClick={async () => {
           try {
+            if (isLoading) return;
+            setIsLoading(true);
             if (!cursos.includes(cursoSeleccionado) || !unidades.includes(unidadSeleccionada)) {
               alert("Curso o unidad no válidos");
               return;
@@ -136,15 +142,17 @@ export default function Alumno({
                 letra: res.data.letra
               });
             } else {
-              alert("No se pudo generar.");
+              alert("No se pudo generar el contenido.");
             }
           } catch (error) {
             alert("Error generando PDF");
             console.error("Error generando PDF:", error);
           } finally {
+            setIsLoading(false);
             setTextoBotonContenidos("Obtener contenidos");
           }
         }}
+          disabled={isLoading}
             >
             {textoBotonContenidos}
             </Boton>

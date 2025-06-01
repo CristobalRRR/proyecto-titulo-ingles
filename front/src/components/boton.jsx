@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 
-export function Boton({ children, className = "", onClick, variant = "default", active = false }) {
+export function Boton({ children, className = "", onClick, variant = "default", active = false, disabled = false }) {
   const base = "px-4 py-2 text-white font-semibold";
   const styles = {
     default: "bg-purple-600 hover:bg-purple-700",
@@ -26,6 +26,7 @@ export function Boton({ children, className = "", onClick, variant = "default", 
     whileTap={{ scale: 0.95 }}
       onClick={onClick}
       className={`${base} ${variantClass} ${className}`}
+      disabled={disabled}
     >
       {children}
     </motion.button>

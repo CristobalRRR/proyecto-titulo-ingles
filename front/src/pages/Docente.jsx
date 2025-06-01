@@ -59,11 +59,12 @@ export default function Docente({
 
     //Recomendaciones
     const generarRecomendaciones = async () => {
+        if (isLoading) return;
         if (!cursos.includes(cursoSeleccionado) || !unidades.includes(unidadSeleccionada)) {
           alert("Curso o unidad no válidos");
           return;
         }
-        setTextoBoton("Generando...");
+        setTextoBoton("Generando recomendaciones...");
         setIsLoading(true);
         try {
           const response = await axios.post("http://localhost:8000/api/generar-recomendacion/", {
@@ -133,6 +134,7 @@ export default function Docente({
           <Boton
             className="w-full rounded-full bg-purple-500"
             onClick={generarRecomendaciones}
+            disabled={isLoading}
           >
             {textoBoton}
           </Boton>
@@ -173,7 +175,9 @@ export default function Docente({
                       <div className="flex flex-col items-center gap-1">
                         <span
                           onClick={async () => {
+                            if (isLoading) return;
                             setGenerandoPDFIndex(i);
+                            setIsLoading(true);
                             try {
                               const res = await axios.post("http://localhost:8000/api/generar-letra-pdf/", {
                                 cancion: cancion,
@@ -193,17 +197,21 @@ export default function Docente({
                               console.error("Error generando PDF:", error);
                             } finally {
                               setGenerandoPDFIndex(null);
+                              setIsLoading(false);
                             }
                           }}
-                          className="bg-red-500 text-white px-2 py-1 rounded-full text-xs cursor-pointer 
-                          transition-colors duration-100 hover:bg-blue-500 active:bg-green-500"
+                          className={`bg-red-500 text-white px-2 py-1 rounded-full text-xs cursor-pointer
+                            transition-colors duration-100 hover:bg-blue-500 active:bg-green-500
+                            ${isLoading ? "opacity-50 pointer-events-none" : ""}`}
                           >
-                          {generandoPDFIndex === i ? "Generando, por favor espere..." : "Informativo"}
+                          {generandoPDFIndex === i ? "Generando PDF..." : "Informativo"}
                         </span>
                 
                         <span
                           onClick={async () => {
+                            if (isLoading) return;
                             setGenerandoPDFIndex(i);
+                            setIsLoading(true);
                             try {
                               const res = await axios.post("http://localhost:8000/api/generar-letra-pdf-contenidos/", {
                                 cancion: cancion,
@@ -222,13 +230,14 @@ export default function Docente({
                               console.error("Error generando PDF:", error);
                             } finally {
                               setGenerandoPDFIndex(null);
+                              setIsLoading(false);
                             }
                           }}
-                          className="bg-red-500 text-white px-2 py-1 rounded-full text-xs cursor-pointer 
-                          transition-colors duration-100 hover:bg-blue-500 active:bg-green-500"  
+                          className={`bg-red-500 text-white px-2 py-1 rounded-full text-xs cursor-pointer
+                            transition-colors duration-100 hover:bg-blue-500 active:bg-green-500
+                            ${isLoading ? "opacity-50 pointer-events-none" : ""}`}
                         >
-                        {generandoPDFIndex === i ? "Generando, por favor espere..." : "Contenidos"}
-
+                        {generandoPDFIndex === i ? "Generando PDF..." : "Contenidos"}
                         </span>
                       </div>
                     </li>
