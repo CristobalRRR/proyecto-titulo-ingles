@@ -14,7 +14,9 @@ export default function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Login setUserType={setUserType} />} />
+        <Route path="/" 
+        element={<Login setUserType={setUserType} />}
+        />
         <Route
           path="/docente"
           element={

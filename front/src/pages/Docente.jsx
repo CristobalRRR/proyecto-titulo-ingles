@@ -32,6 +32,7 @@ export default function Docente({
     const [palabrasClave, setPalabrasClave] = useState("");
     const [pronunciacion, setPronunciacion] = useState("");
     const [vocabulario, setVocabulario] = useState("");
+    const [edad, setEdad] = useState("");
 
     const [textoBoton, setTextoBoton] = useState("Recomendar");
     const [generandoPDFIndex, setGenerandoPDFIndex] = useState(null);
@@ -48,12 +49,14 @@ export default function Docente({
         setPalabrasClave(datosUnidad.palabras_clave || "");
         setPronunciacion(datosUnidad.pronunciacion || "");
         setVocabulario(datosUnidad.vocabulario || "");
+        setEdad(datosCurso.edad || "");
       } else {
         setTema("");
         setContenido("");
         setPalabrasClave("");
         setPronunciacion("");
         setVocabulario("");
+        setEdad("");
       }
     }, [cursoSeleccionado, unidadSeleccionada]);
 
@@ -66,14 +69,29 @@ export default function Docente({
         }
         setTextoBoton("Generando recomendaciones...");
         setIsLoading(true);
+        const prompt = `
+          Actúa como un experto en docencia de inglés y dame una lista de 5 canciones en inglés para un curso de ${cursoSeleccionado} que está trabajando la unidad de ${unidadSeleccionada} cuyo nombre es ${tema}. Los objetivos son:
+          Los contenidos a exponer: ${contenido}.
+          Las palabras clave usadas son: ${palabrasClave}.
+          El vocabulario son las palabras: ${vocabulario}. Se busca mejorar la pronunciación en la letra '${pronunciacion}' incluida en palabras en inglés, 
+          todo esto en el contexto de la educación chilena para estudiantes de ${edad} años de edad, ademas ten en consideracion que no deben incluir nombres y/o letras explicitas o que puedan resultar ofensivas.
+          El formato debe ser el siguiente, una lista sin ningún texto extra: [N° Canción]. [Nombre de la canción] - [Nombre del artista]
+        `;
         try {
-          const response = await axios.post("http://localhost:8000/api/generar-recomendacion/", {
-            curso: cursoSeleccionado,
-            unidad: unidadSeleccionada
-          });
-          const listaCanciones = response.data.canciones
-            .split("\n")
-            .filter((c) => c.trim() !== "");
+          const [resOpenAI, resDeepSeek, resGemini] = await Promise.all([
+            axios.post("https://3ssum4wmpa.execute-api.us-east-1.amazonaws.com/ingles/cancionesOpenAI", { prompt }, { timeout: 29000 }),
+            axios.post("https://3ssum4wmpa.execute-api.us-east-1.amazonaws.com/ingles/cancionesDeepseek", { prompt }, { timeout: 29000 }),
+            axios.post("https://3ssum4wmpa.execute-api.us-east-1.amazonaws.com/ingles/cancionesGemini", { prompt }, { timeout: 29000 })
+          ]);
+
+          const respuestaFinal = await axios.post("https://3ssum4wmpa.execute-api.us-east-1.amazonaws.com/ingles/cancionesCombinadas",
+            {
+              respuesta_openai: resOpenAI.data.canciones,
+              respuesta_deepseek: resDeepSeek.data.canciones,
+              respuesta_gemini: resGemini.data.canciones
+            });
+
+          const listaCanciones = respuestaFinal.data.canciones.split("\n").filter((c) => c.trim() !== "");
           setCanciones(listaCanciones);
           setParametros({
             curso: cursoSeleccionado,
@@ -94,7 +112,49 @@ export default function Docente({
           setTextoBoton("Recomendar");
         }
       };
+      
 
+      //Recomendaciones
+     /* const generarRecomendaciones = async () => {
+      if (isLoading) return;
+      if (!cursos.includes(cursoSeleccionado) || !unidades.includes(unidadSeleccionada)) {
+        alert("Curso o unidad no válidos");
+        return;
+      }
+      setTextoBoton("Generando recomendaciones...");
+      setIsLoading(true);
+      try {
+        const response = await axios.post("http://localhost:8000/api/generar-recomendacion/", {
+          curso: cursoSeleccionado,
+          unidad: unidadSeleccionada
+        });
+        const response = await axios.post("https://3ssum4wmpa.execute-api.us-east-1.amazonaws.com/ingles/songTEST", {
+          curso: cursoSeleccionado,
+          unidad: unidadSeleccionada
+        });
+        const listaCanciones = response.data.canciones
+          .split("\n")
+          .filter((c) => c.trim() !== "");
+        setCanciones(listaCanciones);
+        setParametros({
+          curso: cursoSeleccionado,
+          unidad: unidadSeleccionada,
+          tema,
+          contenidos: contenido,
+          palabras_clave: palabrasClave,
+          pronunciacion,
+          vocabulario
+        });
+        setUserType("recomendaciones");
+      } catch (error) {
+        alert("Error generando recomendaciones");
+        console.error("Error generando recomendaciones:", error);
+      }
+      finally{
+        setIsLoading(false);
+        setTextoBoton("Recomendar");
+      }
+    };*/
 
     //Cerrar sesión
     const handleLogout = async () => {
