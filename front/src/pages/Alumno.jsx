@@ -28,6 +28,8 @@ export default function Alumno({
     const [palabrasClave, setPalabrasClave] = useState("");
     const [pronunciacion, setPronunciacion] = useState("");
     const [vocabulario, setVocabulario] = useState("");
+    const [edad, setEdad] = useState("");
+
 
     const [textoBotonCancion, setTextoBotonCancion] = useState("Generar canción");
     const [textoBotonContenidos, setTextoBotonContenidos] = useState("Obtener contenidos");
@@ -42,17 +44,54 @@ export default function Alumno({
           setPalabrasClave(datosUnidad.palabras_clave || "");
           setPronunciacion(datosUnidad.pronunciacion || "");
           setVocabulario(datosUnidad.vocabulario || "");
+          setEdad(datosCurso.edad || "");
         } else {
           setTema("");
           setContenido("");
           setPalabrasClave("");
           setPronunciacion("");
           setVocabulario("");
+          setEdad("");
         }
       }, [cursoSeleccionado, unidadSeleccionada]);
 
-    const generarCancionOriginal = async () => {
+      //Cancion original
+      const generarCancionOriginal = async () => {
+        if (isLoading) return;
+        if (!cursos.includes(cursoSeleccionado) || !unidades.includes(unidadSeleccionada)) {
+        alert("Curso o unidad no válidos");
+        return;
+        }
+        setTextoBotonCancion("Generando canción...");
+        setIsLoading(true);
+        const promptCancion = `
+          Eres un compositor de canciones infantiles educativas. Crea una canción original en inglés para estudiantes de ${edad} años del curso ${cursoSeleccionado}. 
+          La canción debe estar basada en la unidad '${unidadSeleccionada}' llamada '${tema}'. Los contenidos a enseñar son: ${contenido}. 
+          Incluye este vocabulario: ${vocabulario}. Refuerza la pronunciación de la letra '${pronunciacion}' en las palabras. 
+          Debe ser alegre, fácil de cantar, y adecuada para niños de la edad '${edad}', sin lenguaje ofensivo ni nombres propios. 
+          Devuelve solo la letra en formato verso a verso, sin explicaciones ni encabezados.
+        `;
+        try {
+          const respuestaCancion = await axios.post("https://3ssum4wmpa.execute-api.us-east-1.amazonaws.com/ingles/generarCancionOriginal", { promptCancion });
+          if (respuestaCancion.data && respuestaCancion.data.letra) {
+            setUserType("cancion")
+            setLetraCancion(respuestaCancion.data.letra);
+          } else {
+            alert("No se generó ninguna letra.");
+          }
+        } catch (error) {
+          console.error("Error al generar canción:", error);
+          alert("Ocurrió un error.");
+        }
+        finally{
+          setIsLoading(false);
+          setTextoBotonCancion("Generar canción");
+        }
+      };
 
+      /*
+      //Cancion original localhost
+      const generarCancionOriginal = async () => {
         if (!cursos.includes(cursoSeleccionado) || !unidades.includes(unidadSeleccionada)) {
         alert("Curso o unidad no válidos");
         return;
@@ -80,6 +119,8 @@ export default function Alumno({
           setTextoBotonCancion("Generar canción");
         }
       };
+      */
+
 
     if(userType === "alumno"){
     return (

@@ -69,7 +69,7 @@ export default function Docente({
         }
         setTextoBoton("Generando recomendaciones...");
         setIsLoading(true);
-        const prompt = `
+        const promptRecomendacion = `
           Actúa como un experto en docencia de inglés y dame una lista de 5 canciones en inglés para un curso de ${cursoSeleccionado} que está trabajando la unidad de ${unidadSeleccionada} cuyo nombre es ${tema}. Los objetivos son:
           Los contenidos a exponer: ${contenido}.
           Las palabras clave usadas son: ${palabrasClave}.
@@ -79,9 +79,9 @@ export default function Docente({
         `;
         try {
           const [resOpenAI, resDeepSeek, resGemini] = await Promise.all([
-            axios.post("https://3ssum4wmpa.execute-api.us-east-1.amazonaws.com/ingles/cancionesOpenAI", { prompt }, { timeout: 29000 }),
-            axios.post("https://3ssum4wmpa.execute-api.us-east-1.amazonaws.com/ingles/cancionesDeepseek", { prompt }, { timeout: 29000 }),
-            axios.post("https://3ssum4wmpa.execute-api.us-east-1.amazonaws.com/ingles/cancionesGemini", { prompt }, { timeout: 29000 })
+            axios.post("https://3ssum4wmpa.execute-api.us-east-1.amazonaws.com/ingles/cancionesOpenAI", { promptRecomendacion }, { timeout: 29000 }),
+            axios.post("https://3ssum4wmpa.execute-api.us-east-1.amazonaws.com/ingles/cancionesDeepseek", { promptRecomendacion }, { timeout: 29000 }),
+            axios.post("https://3ssum4wmpa.execute-api.us-east-1.amazonaws.com/ingles/cancionesGemini", { promptRecomendacion }, { timeout: 29000 })
           ]);
 
           const respuestaFinal = await axios.post("https://3ssum4wmpa.execute-api.us-east-1.amazonaws.com/ingles/cancionesCombinadas",
@@ -113,9 +113,9 @@ export default function Docente({
         }
       };
       
-
-      //Recomendaciones
-     /* const generarRecomendaciones = async () => {
+      /* 
+      //Recomendaciones localhost
+      const generarRecomendaciones = async () => {
       if (isLoading) return;
       if (!cursos.includes(cursoSeleccionado) || !unidades.includes(unidadSeleccionada)) {
         alert("Curso o unidad no válidos");
