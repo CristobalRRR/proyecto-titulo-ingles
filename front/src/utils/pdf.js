@@ -193,15 +193,12 @@ export const generarPDFContenidos = ({
           const textWidth = doc.getTextWidth(part);
           x += textWidth;
         }
-      });
-      //Hasta aqui
-      
+      });   
       y += lineHeight;
     });
     
     y += paragraphSpacing - lineHeight;
   }
-
   doc.save(`${cancion}-Contenidos.pdf`);
 };
 
@@ -269,9 +266,25 @@ export const generarPDFAlumno = ({
       y = margen;
     }
     lines.forEach(line => {
-      doc.text(line, margen, y);
+      let x = margen;
+      const parts = line.split(/(\*\*[^\*]+\*\*)/); // divide por texto en **negrita**
+      parts.forEach(part => {
+        if (part.startsWith("**") && part.endsWith("**")) {
+          const boldText = part.slice(2, -2); // remueve los **
+          doc.setFont("helvetica", "bold");
+          doc.text(boldText, x, y, { baseline: 'top' });
+          const textWidth = doc.getTextWidth(boldText);
+          x += textWidth;
+        } else {
+          doc.setFont("helvetica", "normal");
+          doc.text(part, x, y, { baseline: 'top' });
+          const textWidth = doc.getTextWidth(part);
+          x += textWidth;
+        }
+      });   
       y += lineHeight;
     });
+    
     y += paragraphSpacing - lineHeight;
   }
   doc.save(`${cancion}-Alumno.pdf`);

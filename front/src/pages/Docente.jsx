@@ -206,7 +206,122 @@ export default function Docente({
     );
   }
 
+  //Pantalla recomendaciones AWS
+  if (userType === "recomendaciones") {
+    return (
+            <div className="min-h-screen w-screen bg-purple-300 flex items-center justify-center">
+              <Tarjeta className="bg-zinc-900 w-full max-w-[400px] p-4 text-white">
+                <h2 className="text-center text-sm bg-purple-600 rounded-t-xl py-1">Top 5 canciones que te servirán</h2>
+                <TarjetaContenido className="bg-white text-black rounded-b-xl py-3">
+                <ol className="space-y-2">
+                <li className="grid grid-cols-4 gap-2 font-semibold text-sm border-b pb-1 text-center">
+                  <span className="col-span-2">Canción</span>
+                  <span>YouTube</span>
+                  <span>PDFs</span>
+                </li>
+                   {canciones.map((cancion, i) => (
+                    <li key={i} className="grid grid-cols-4 gap-2 items-center text-sm">
+                      <span className="col-span-2">{cancion}</span>
+                
+                      <a
+                        className="text-blue-600 underline text-center hover:bg-gray-100 focus:outline-gray-500 active:bg-gray-400"
+                        href={"https://www.youtube.com/results?search_query=" + encodeURIComponent(cancion)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Ver en Youtube
+                      </a>
+                
+                      <div className="flex flex-col items-center gap-1">
+                        <span
+                          onClick={async () => {
+                            if (isLoading) return;
+                            setGenerandoPDFIndex(i);
+                            setIsLoading(true);
+                            try {
+                                const res = await axios.post("https://3ssum4wmpa.execute-api.us-east-1.amazonaws.com/ingles/generarLetra", {
+                                  cancion: cancion,
+                                  parametros: parametros
+                                });
+
+                              if (res.data && res.data.letra) {
+                                generarPDF({
+                                  ...parametros,
+                                  cancion: cancion.split(" - ")[0].replace(/^\d+\.\s*/, "").trim(),
+                                  artista: cancion.split(" - ")[1].trim(),
+                                  letra: res.data.letra
+                                });
+                              }
+                            } catch (error) {
+                              alert("Error generando PDF");
+                              console.error("Error generando PDF:", error);
+                            } finally {
+                              setGenerandoPDFIndex(null);
+                              setIsLoading(false);
+                            }
+                          }}
+                          className={`bg-red-500 text-white px-2 py-1 rounded-full text-xs cursor-pointer
+                            transition-colors duration-100 hover:bg-blue-500 active:bg-green-500
+                            ${isLoading ? "opacity-50 pointer-events-none" : ""}`}
+                          >
+                          {generandoPDFIndex === i ? "Generando PDF..." : "Informativo"}
+                        </span>
+                
+                        <span
+                          onClick={async () => {
+                            if (isLoading) return;
+                            setGenerandoPDFIndex(i);
+                            setIsLoading(true);
+                            try {
+                              const letraObtenida = await axios.post("https://3ssum4wmpa.execute-api.us-east-1.amazonaws.com/ingles/generarLetra", {
+                                cancion: cancion,
+                                parametros: parametros
+                              });
+                              const letraResaltada = await axios.post("https://3ssum4wmpa.execute-api.us-east-1.amazonaws.com/ingles/generarContenidos", {
+                                letra: letraObtenida.data.letra,
+                                parametros
+                              });
+                              if (letraResaltada.data && letraResaltada.data.letra) {
+                                generarPDFContenidos({
+                                  ...parametros,
+                                  cancion: cancion.split(" - ")[0].replace(/^\d+\.\s*/, "").trim(),
+                                  artista: cancion.split(" - ")[1].trim(),
+                                  letra: letraResaltada.data.letra
+                                });
+                              }
+                            } catch (error) {
+                              alert("Error generando PDF");
+                              console.error("Error generando PDF:", error);
+                            } finally {
+                              setGenerandoPDFIndex(null);
+                              setIsLoading(false);
+                            }
+                          }}
+                          className={`bg-red-500 text-white px-2 py-1 rounded-full text-xs cursor-pointer
+                            transition-colors duration-100 hover:bg-blue-500 active:bg-green-500
+                            ${isLoading ? "opacity-50 pointer-events-none" : ""}`}
+                        >
+                        {generandoPDFIndex === i ? "Generando PDF..." : "Contenidos"}
+                        </span>
+                      </div>
+                    </li>
+                  ))}
+              </ol>
+                <Boton className="w-full mt-4 bg-purple-500 rounded-full"
+                onClick={() => setUserType("docente")}
+                  >
+                    Regresar</Boton>
+                </TarjetaContenido>
+              </Tarjeta>
+            </div>
+          );
+        }
       
+      return null;
+}
+
+  //Pantalla recomendaciones localhost
+  /*
   if (userType === "recomendaciones") {
     return (
             <div className="min-h-screen w-screen bg-purple-300 flex items-center justify-center">
@@ -246,9 +361,9 @@ export default function Docente({
                     
                               if (res.data && res.data.letra) {
                                 generarPDF({
-                                  ...parametros,
-                                  cancion: cancion.split(" - ")[0].replace(/^\d+\.\s*/, "").trim(),
-                                  artista: cancion.split(" - ")[1].trim(),
+                                  ...parametros,*/
+                                  //cancion: cancion.split(" - ")[0].replace(/^\d+\.\s*/, "").trim(),
+                                  /*artista: cancion.split(" - ")[1].trim(),
                                   letra: res.data.letra
                                 });
                               }
@@ -279,9 +394,9 @@ export default function Docente({
                               })
                               if (res.data && res.data.letra) {
                                 generarPDFContenidos({
-                                  ...parametros,
-                                  cancion: cancion.split(" - ")[0].replace(/^\d+\.\s*/, "").trim(),
-                                  artista: cancion.split(" - ")[1].trim(),
+                                  ...parametros,*/
+                                  //cancion: cancion.split(" - ")[0].replace(/^\d+\.\s*/, "").trim(),
+                                  /*artista: cancion.split(" - ")[1].trim(),
                                   letra: res.data.letra
                                 });
                               }
@@ -314,4 +429,4 @@ export default function Docente({
         }
       
       return null;
-}
+} */

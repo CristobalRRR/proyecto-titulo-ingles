@@ -121,7 +121,112 @@ export default function Alumno({
       };
       */
 
+      if(userType === "alumno"){
+        return (
+          <div className="min-h-screen w-screen bg-purple-300 flex items-center justify-center">
+            <Tarjeta className="bg-zinc-900 w-full max-w-[400px] p-4 space-y-2 text-white">
+              <h2 className="text-center text-xl sm:text-2xl">Generar canción educativa</h2>
+              <Select
+              label="Selecciona Curso"
+              items={cursos}
+              value={cursoSeleccionado}
+              onChange={(e) => setCursoSeleccionado(e.target.value)}
+            />
+            <Select
+              label="Selecciona Unidad"
+              items={unidades}
+              value={unidadSeleccionada}
+              onChange={(e) => setUnidadSeleccionada(e.target.value)}
+            />
+            <Select label="Tema" value={tema || "Selecciona curso y unidad"} disabled />
+            <Boton className="w-full bg-purple-600" onClick={generarCancionOriginal} 
+            disabled={isLoading}
+            >
+              {textoBotonCancion}
+            </Boton>
+            <Boton
+            className="w-full mt-4 bg-purple-500 rounded-full"
+            onClick={async () => {
+              try {
+                if (isLoading) return;
+                setIsLoading(true);
+                if (!cursos.includes(cursoSeleccionado) || !unidades.includes(unidadSeleccionada)) {
+                  alert("Curso o unidad no válidos");
+                  return;
+                }
+                const datosCurso = contenidos[cursoSeleccionado];
+                const datosUnidad = datosCurso?.unidades?.[unidadSeleccionada];
+                const parametros = {
+                  unidad: unidadSeleccionada,
+                  curso: cursoSeleccionado,
+                  tema: datosUnidad.tema,
+                  contenidos: datosUnidad.contenidos,
+                  palabras_clave: datosUnidad.palabras_clave,
+                  pronunciacion: datosUnidad.pronunciacion,
+                  vocabulario: datosUnidad.vocabulario
+                };
+                setTextoBotonContenidos("Obteniendo, esto puede tardar un minuto o dos...");
+                const promptRecomendacion = `
+                Actúa como un experto en docencia de inglés y dame una 1 cancion en inglés para un curso de ${cursoSeleccionado} que está trabajando la unidad de ${unidadSeleccionada} cuyo nombre es ${tema}. Los objetivos son:
+                Los contenidos a exponer: ${contenido}.
+                Las palabras clave usadas son: ${palabrasClave}.
+                El vocabulario son las palabras: ${vocabulario}. Se busca mejorar la pronunciación en la letra '${pronunciacion}' incluida en palabras en inglés, 
+                todo esto en el contexto de la educación chilena para estudiantes de ${edad} años de edad, ademas ten en consideracion que no deben incluir nombres y/o letras explicitas o que puedan resultar ofensivas.
+                El formato debe ser el siguiente, sin ningún texto extra: [Nombre de la canción] - [Nombre del artista]
+              `;
 
+              const cancionRecomendada = await axios.post("https://3ssum4wmpa.execute-api.us-east-1.amazonaws.com/ingles/cancionesOpenAI", {
+                promptRecomendacion
+              });
+
+              const cancion = cancionRecomendada.data?.canciones;
+
+              const cancionLetra = await axios.post("https://3ssum4wmpa.execute-api.us-east-1.amazonaws.com/ingles/generarLetra", {
+                cancion,
+                parametros
+              });
+
+              const letraObtenida = cancionLetra.data?.letra;
+
+              const letraResaltada = await axios.post("https://3ssum4wmpa.execute-api.us-east-1.amazonaws.com/ingles/generarContenidos", {
+                letra: letraObtenida,
+                parametros
+              });
+              
+              const letraFinal = letraResaltada.data?.letra;
+
+              const partes = cancion.split(" - ");
+              const cancionNombre = partes[0].replace(/^\d+\.\s*/, "").trim();
+              const artista = partes[1].trim();
+              
+              if (letraFinal) {
+                generarPDFAlumno({
+                  ...parametros,
+                  cancion: cancionNombre,
+                  artista: artista,
+                  letra: letraFinal
+                });
+              }
+              } catch (error) {
+                alert("Error generando PDF");
+                console.error("Error generando PDF:", error);
+              } finally {
+                setIsLoading(false);
+                setTextoBotonContenidos("Obtener contenidos");
+              }
+            }}
+              disabled={isLoading}
+                >
+                {textoBotonContenidos}
+                </Boton>
+            <Boton className="w-full mt-4 bg-purple-500 rounded-full" onClick={() => navigate("/")}>Regresar</Boton>
+          </Tarjeta>
+        </div>
+        );
+        }
+    
+    //alumno localhost
+    /*
     if(userType === "alumno"){
     return (
       <div className="min-h-screen w-screen bg-purple-300 flex items-center justify-center">
@@ -168,13 +273,15 @@ export default function Alumno({
             };
             setTextoBotonContenidos("Obteniendo, esto puede tardar un minuto o dos...");
             
-            const res = await axios.post("http://localhost:8000/api/generar-letra-pdf-alumno/", {
+            const res = await axios.post("http://localhost:8000/api/generar_contenidos_pdf_alumno/", {
               curso: cursoSeleccionado,
               unidad: unidadSeleccionada
             });
             if (res.data && res.data.letra && res.data.cancion) {
               const partes = res.data.cancion.split(" - ");
-              const cancionNombre = partes[0].replace(/^\d+\.\s*/, "").trim();
+             */
+              //const cancionNombre = partes[0].replace(/^\d+\.\s*/, "").trim();
+              /*
               const artista = partes[1]?.trim() || "";
               generarPDFAlumno({
                 ...parametros,
@@ -202,8 +309,7 @@ export default function Alumno({
     </div>
     );
     }
-    
-    
+    */
 
     if (userType === "cancion") {
     return (
