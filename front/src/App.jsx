@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import Docente from "./pages/Docente";
 import Alumno from "./pages/Alumno";
@@ -12,7 +12,7 @@ export default function App() {
   const [userType, setUserType] = useState("");
 
   return (
-    <Router basename="/proyecto-titulo-ingles">
+    <Router>
       <Routes>
         <Route path="/loginingles" 
         element={<Login setUserType={setUserType} />}
