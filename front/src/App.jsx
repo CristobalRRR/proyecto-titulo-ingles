@@ -12,9 +12,9 @@ export default function App() {
   const [userType, setUserType] = useState("");
 
   return (
-    <Router>
+    <Router basename="/proyecto-titulo-ingles">
       <Routes>
-        <Route path="/" 
+        <Route path="/loginingles" 
         element={<Login setUserType={setUserType} />}
         />
         <Route

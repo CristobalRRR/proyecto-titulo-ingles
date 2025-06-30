@@ -60,6 +60,21 @@ export default function Docente({
       }
     }, [cursoSeleccionado, unidadSeleccionada]);
 
+    //Cierre de sesion al cerrar pestaña/navegador
+    useEffect(() => {
+      const handleBeforeUnload = async () => {
+        try {
+          await doSignOut();
+        } catch (error) {
+          console.error("Error cerrando sesión automáticamente:", error);
+        }
+      };
+      window.addEventListener("beforeunload", handleBeforeUnload);
+      return () => {
+        window.removeEventListener("beforeunload", handleBeforeUnload);
+      };
+    }, []);
+
     //Recomendaciones
     const generarRecomendaciones = async () => {
         if (isLoading) return;
@@ -159,21 +174,22 @@ export default function Docente({
     //Cerrar sesión
     const handleLogout = async () => {
       await doSignOut();
-      navigate("/");
+      navigate("/loginingles");
     };
 
     //Visualización
     if (!currentUser){
       return(
         <div className="min-h-screen w-screen flex items-center justify-center">
-        <p>
-        <img src="/no.jfif" width="700px"></img>
-        Sesión no autenticada, inicie sesión correctamente por favor
+        <center><p >
+        {/*<img src="/no.jfif" width="700px"></img>*/}
+        <img src="/exclamacion.png" width="250px"/>
+        Sesión no autenticada, inicie sesión nuevamente por favor.
         <Boton className="w-full rounded-full bg-purple-500" onClick={handleLogout}>
             Regresar
         </Boton>
         </p>
-
+        </center>
         </div>
       )
     }

@@ -219,7 +219,7 @@ export default function Alumno({
                 >
                 {textoBotonContenidos}
                 </Boton>
-            <Boton className="w-full mt-4 bg-purple-500 rounded-full" onClick={() => navigate("/")}>Regresar</Boton>
+            <Boton className="w-full mt-4 bg-purple-500 rounded-full" onClick={() => navigate("/loginingles")}>Regresar</Boton>
           </Tarjeta>
         </div>
         );
