@@ -38,7 +38,7 @@ export default function Login({ setUserType }) {
     return (
       <div className="min-h-screen w-screen flex items-center justify-center bg-purple-300">
         <div className="flex flex-col items-center bg-zinc-900 p-6 rounded-2xl text-white w-full max-w-[400px] h-[70vh]">
-          <h1 className="text-xl sm:text-2xl font-bold text-center mb-2">Aprende inglés con canciones</h1>
+          <h1 className="text-xl sm:text-2xl font-bold text-center mb-2">songIAdvice: Aprende inglés con canciones</h1>
           <div className="w-full space-y-4 mt-4">
             <Input placeholder="Correo electrónico" className="bg-white text-black" onChange={e => setEmail(e.target.value)} />
             <Input placeholder="Contraseña" type="password" className="bg-white text-black" onChange={e => setPassword(e.target.value)} />

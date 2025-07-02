@@ -19,7 +19,7 @@ export const generarPDF = ({
   // Configuración inicial
   doc.setFont("helvetica");
   doc.setFontSize(12);
-  doc.text("Versión docente - Informativo", doc.internal.pageSize.getWidth() / 2, y, { align: "center" });
+  doc.text("songIAdvice: Aprende inglés con canciones", doc.internal.pageSize.getWidth() / 2, y, { align: "center" });
   y += 15;
 
   // Función mejorada para agregar texto con formato
@@ -118,7 +118,7 @@ export const generarPDFContenidos = ({
   let y = margen;
 
   doc.setFontSize(12);
-  doc.text("Versión docente - Contenidos", doc.internal.pageSize.getWidth() / 2, y, { align: "center" });
+  doc.text("songIAdvice: Aprende inglés con canciones", doc.internal.pageSize.getWidth() / 2, y, { align: "center" });
   y += 15;
 
   const textWidth = doc.internal.pageSize.width - margen * 2;
@@ -219,7 +219,7 @@ export const generarPDFAlumno = ({
   let y = margen;
   doc.setFont("helvetica");
   doc.setFontSize(12);
-  doc.text("Versión Alumno", doc.internal.pageSize.getWidth() / 2, y, { align: "center" });
+  doc.text("songIAdvice: Aprende inglés con canciones", doc.internal.pageSize.getWidth() / 2, y, { align: "center" });
   y += 15;
   const textWidth = doc.internal.pageSize.width - margen * 2;
   const agregarSeccion = (label, valor, isBoldLabel = true, isMultiLine = true) => {
