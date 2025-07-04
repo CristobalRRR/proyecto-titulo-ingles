@@ -5,7 +5,7 @@ import { Input } from "../components/input";
 import { doSignInWithEmailAndPassword } from "../firebase/auth";
 import { useAuth } from "../contexts/authContext/index";
 
-export default function Login({ setUserType }) {
+export default function LoginIngles({ setUserType }) {
     const { userLoggedIn } = useAuth();
     const navigate = useNavigate();
 

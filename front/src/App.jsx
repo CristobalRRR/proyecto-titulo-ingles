@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
-import Login from "./pages/Login";
+import LoginIngles from "./pages/LoginIngles";
 import Docente from "./pages/Docente";
 import Alumno from "./pages/Alumno";
 export default function App() {
@@ -15,7 +15,7 @@ export default function App() {
     <Router>
       <Routes>
         <Route path="/loginingles" 
-        element={<Login setUserType={setUserType} />}
+        element={<LoginIngles setUserType={setUserType} />}
         />
         <Route
           path="/docente"

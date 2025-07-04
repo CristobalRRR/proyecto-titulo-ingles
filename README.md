@@ -27,6 +27,9 @@ npm install --save-dev gh-pages </code></pre>
 <p>Correr el servidor de desarrollo:</p>
 <pre><code>npm run dev</code></pre>
 
+<p>Desplegar el frontend:</p>
+<pre><code>npm run deploy</code></pre>
+
 <hr>
 
 <h1>Backend</h1>
