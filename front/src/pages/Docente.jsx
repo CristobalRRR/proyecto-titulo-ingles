@@ -182,8 +182,7 @@ export default function Docente({
       return(
         <div className="min-h-screen w-screen flex items-center justify-center">
         <center><p >
-        {/*<img src="/no.jfif" width="700px"></img>*/}
-        <img src="/exclamacion.png" width="250px"/>
+        <img src="public/exclamacion.png" width="250px"/>
         Sesión no autenticada, inicie sesión nuevamente por favor.
         <Boton className="w-full rounded-full bg-purple-500" onClick={handleLogout}>
             Regresar
