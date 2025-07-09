@@ -17,9 +17,9 @@ export const generarPDF = ({
   let y = margen;
 
   // Configuración inicial
-  doc.setFont("helvetica");
+  doc.setFont("helvetica", "bold");
   doc.setFontSize(12);
-  doc.text("songIAdvice: Aprende inglés con canciones", doc.internal.pageSize.getWidth() / 2, y, { align: "center" });
+  doc.text("SongIAdvice: Aprendiendo inglés con canciones", doc.internal.pageSize.getWidth() / 2, y, { align: "center" });
   y += 15;
 
   // Función mejorada para agregar texto con formato
@@ -118,7 +118,8 @@ export const generarPDFContenidos = ({
   let y = margen;
 
   doc.setFontSize(12);
-  doc.text("songIAdvice: Aprende inglés con canciones", doc.internal.pageSize.getWidth() / 2, y, { align: "center" });
+  doc.setFont("helvetica", "bold");
+  doc.text("SongIAdvice: Aprendiendo inglés con canciones", doc.internal.pageSize.getWidth() / 2, y, { align: "center" });
   y += 15;
 
   const textWidth = doc.internal.pageSize.width - margen * 2;
@@ -217,9 +218,9 @@ export const generarPDFAlumno = ({
   const doc = new jsPDF();
   const margen = 15;
   let y = margen;
-  doc.setFont("helvetica");
+  doc.setFont("helvetica", "bold");
   doc.setFontSize(12);
-  doc.text("songIAdvice: Aprende inglés con canciones", doc.internal.pageSize.getWidth() / 2, y, { align: "center" });
+  doc.text("SongIAdvice: Aprendiendo inglés con canciones", doc.internal.pageSize.getWidth() / 2, y, { align: "center" });
   y += 15;
   const textWidth = doc.internal.pageSize.width - margen * 2;
   const agregarSeccion = (label, valor, isBoldLabel = true, isMultiLine = true) => {
