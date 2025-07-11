@@ -142,7 +142,6 @@ export const generarPDFContenidos = ({
       doc.text(valor.toString(), margen + 40, y);
       y += 7;
     }
-  
     y += 5;
   };
 
@@ -163,14 +162,38 @@ export const generarPDFContenidos = ({
 
   doc.setFont("helvetica", "normal");
   doc.setFontSize(11);
-
   const limitePagina = doc.internal.pageSize.height - 30;
   const lineHeight = 6;
   const paragraphSpacing = 8;
 
-  
   const parrafos = letra.split('\n').filter(p => p.trim() !== '');
   for (let p of parrafos) {
+    // Detecta si comienza con "*Letra:*" o "*Vocabulario:*" para agregar espacios
+    const isSpecialSection = p.trim().match(/^\*(Letra|Vocabulario):\*/);
+    if (isSpecialSection) {
+      y += 12; // espacio equivalente a 2 líneas   
+
+      // Verificar si necesitamos nueva página
+      if (y > limitePagina) {
+        doc.addPage();
+        y = margen;
+      }
+      // Procesar la línea especial con subrayado
+      doc.setFont("helvetica", "bold");
+      const text = p.trim();
+      const textWidth = doc.getTextWidth(text);
+      doc.text(text, margen, y);
+      
+      // Agregar línea de subrayado
+      doc.setDrawColor(0, 0, 0); // Color negro
+      doc.setLineWidth(0.5); // Grosor de la línea
+      doc.line(margen, y + 2, margen + textWidth, y + 2);
+      
+      y += lineHeight;
+      continue; // Saltar al siguiente párrafo
+    }
+
+
     const lines = doc.splitTextToSize(p.trim(), textWidth);
     if (y + (lines.length * lineHeight) > limitePagina) {
       doc.addPage();
@@ -218,10 +241,12 @@ export const generarPDFAlumno = ({
   const doc = new jsPDF();
   const margen = 15;
   let y = margen;
+
   doc.setFont("helvetica", "bold");
   doc.setFontSize(12);
   doc.text("SongIAdvice: Aprendiendo inglés con canciones", doc.internal.pageSize.getWidth() / 2, y, { align: "center" });
   y += 15;
+
   const textWidth = doc.internal.pageSize.width - margen * 2;
   const agregarSeccion = (label, valor, isBoldLabel = true, isMultiLine = true) => {
     if (isBoldLabel) {
@@ -231,6 +256,7 @@ export const generarPDFAlumno = ({
     }
     doc.text(`${label}:`, margen, y);
     doc.setFont("helvetica", "normal");
+
     if (isMultiLine) {
       const textLines = doc.splitTextToSize(valor.toString(), textWidth - 40); // limit width for values
       doc.text(textLines, margen + 40, y);
@@ -249,23 +275,53 @@ export const generarPDFAlumno = ({
   agregarSeccion("Vocabulario", vocabulario);
   agregarSeccion("Canción", `"${cancion}"`);
   agregarSeccion("Autor", artista);
+
   y += 10;
   doc.setFont("helvetica", "bold");
   doc.setFontSize(14);
   doc.text("Letra, verbos y contenido:", margen, y);
   y += 10;
+
   doc.setFont("helvetica", "normal");
   doc.setFontSize(11);
   const limitePagina = doc.internal.pageSize.height - 30;
   const lineHeight = 6;
   const paragraphSpacing = 8;
+
   const parrafos = letra.split('\n').filter(p => p.trim() !== '');
   for (let p of parrafos) {
+
+    const isSpecialSection = p.trim().match(/^\*(Letra|Vocabulario):\*/);
+    if (isSpecialSection) {
+      y += 12;   
+
+      // Verificar si necesitamos nueva página
+      if (y > limitePagina) {
+        doc.addPage();
+        y = margen;
+      }
+      // Procesar la línea especial con subrayado
+      doc.setFont("helvetica", "bold");
+      const text = p.trim();
+      const textWidth = doc.getTextWidth(text);
+      doc.text(text, margen, y);
+      
+      // Agregar línea de subrayado
+      doc.setDrawColor(0, 0, 0); // Color negro
+      doc.setLineWidth(0.5); // Grosor de la línea
+      doc.line(margen, y + 2, margen + textWidth, y + 2);
+      
+      y += lineHeight;
+      continue; // Saltar al siguiente párrafo
+    }
+
+
     const lines = doc.splitTextToSize(p.trim(), textWidth);
     if (y + (lines.length * lineHeight) > limitePagina) {
       doc.addPage();
       y = margen;
     }
+
     lines.forEach(line => {
       let x = margen;
       const parts = line.split(/(\*\*[^\*]+\*\*)/); // divide por texto en **negrita**
