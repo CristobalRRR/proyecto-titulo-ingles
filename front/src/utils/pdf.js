@@ -275,6 +275,19 @@ export const generarPDFAlumno = ({
   agregarSeccion("Vocabulario", vocabulario);
   agregarSeccion("Canción", `"${cancion}"`);
   agregarSeccion("Autor", artista);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(12);
+  doc.text("Enlace a YouTube:", margen, y);
+  doc.setFont("helvetica", "normal");
+  doc.setTextColor(0, 0, 255);
+  const url = `https://www.youtube.com/results?search_query=${encodeURIComponent(cancion + " - " + artista)}`;
+  doc.textWithLink("Ver en YouTube", margen + 40, y, { url });
+  const linkWidth = doc.getTextWidth("Ver en YouTube");
+  doc.setDrawColor(0, 0, 255);
+  doc.setLineWidth(0.3);
+  doc.line(margen + 40, y + 1, margen + 40 + linkWidth, y + 1);
+  doc.setTextColor(0, 0, 0);
+  y += 12;
 
   y += 10;
   doc.setFont("helvetica", "bold");
